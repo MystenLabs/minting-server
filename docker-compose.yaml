@@ -12,7 +12,7 @@ services:
     depends_on:
       - redis
     volumes:
-      - .:/usr/src/app
+      - .:/usr/src/minting_server/app
     ports:
       - "3000:3000"
 volumes:
