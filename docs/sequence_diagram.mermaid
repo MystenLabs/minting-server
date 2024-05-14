@@ -3,13 +3,15 @@ sequenceDiagram
 	participant Request Handler
 	participant Request Processor
 	participant Notifier
+	participant Database Queue
 	Client -->> Request Handler: Send Request (e.g. mint)
 	Request Handler  ->> Request Handler: Check Eligibility
   alt not eligible
 		Request Handler -->> Client: 405 Not allowed
 	else eligible
     Request Handler -->> Client: 202 Accepted & subscribe to web socket
-	  Request Handler ->> Request Processor: Send transaction to process
+	  Request Handler ->> Database Queue: Store transaction
+	  Database Queue ->> Request Processor: Pull transaction to process it
 	  Request Processor ->> Notifier: Send transaction result
 	  Notifier -->> Client: Notify that the transaction was complete through web socket
   end
