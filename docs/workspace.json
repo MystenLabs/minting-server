@@ -1,0 +1,306 @@
+{
+  "id" : 1,
+  "name" : "Name",
+  "description" : "Description",
+  "lastModifiedDate" : "2024-05-01T12:17:53Z",
+  "lastModifiedAgent" : "structurizr-javascript",
+  "properties" : {
+    "structurizr.dsl" : "IWNvbnN0YW50IFNZU1RFTV9OQU1FICJNaW50aW5nIFNlcnZlciIKCndvcmtzcGFjZSB7CiAgICBtb2RlbCB7CiAgICAgICAgY2xpZW50ID0gc29mdHdhcmVTeXN0ZW0gIkNsaWVudCIgIkEgY2xpZW50IHRoYXQgbmVlZHMgdG8gbWFrZSBhIHRyYW5zYWN0aW9uLiIKCiAgICAgICAgbWludGluZ1NlcnZlciA9IHNvZnR3YXJlU3lzdGVtICIke1NZU1RFTV9OQU1FfSIgIlByb2Nlc3NlcyByZXF1ZXN0IGFuZCBleGVjdXRlcyB0aGUgdHJhbnNhY3Rpb24uIiB7CiAgICAgICAgICAgIGdyb3VwIHdvcmtlciB7CiAgICAgICAgICAgICAgICByZXF1ZXN0SGFuZGxlciA9IGNvbnRhaW5lciAiUmVxdWVzdCBIYW5kbGVyIEFQSSIgIkNoZWNrcyB0aGUgZWxpZ2liaWxpdHkgb2YgdGhlIHJlcXVlc3QuIGUuZy4gb25seSBvbmUgbWludCBwZXIgY2xpZW50IiAiZXhwcmVzcy5qcyIKICAgICAgICAgICAgICAgIHJlcXVlc3RQcm9jZXNzb3IgPSBjb250YWluZXIgIlJlcXVlc3QgUHJvY2Vzc29yIiAiUHJvY2Vzc2VzIHJlcXVlc3RzIGFuZCBleGVjdXRlcyB0aGVtLiIKICAgICAgICAgICAgfQoKICAgICAgICAgICAgZGF0YWJhc2UgPSBjb250YWluZXIgIkRhdGFiYXNlIiAiQ29udGFpbnMgcmVxdWVzdCBxdWV1ZXMgdG8gYmUgcHJvY2Vzc2VkIGJ5IHdvcmtlcnMgYW5kIGtlZXBzIHRyYWNrIG9mIHRoZSByZXF1ZXN0IHN0YXRlcy4iICJSZWRpcyIgewogICAgICAgICAgICAgICAgdGFncyAiZGF0YWJhc2UiCiAgICAgICAgICAgIH0KCiAgICAgICAgICAgcmVxdWVzdE1vbml0b3IgPSBjb250YWluZXIgIlJlcXVlc3QgTW9uaXRvciIgIlRyYWNrcyB0aGUgcmVxdWVzdCBzdGF0ZXMgYW5kIHRoZSB0cmFmZmljIG9mIHRoZSBzeXN0ZW0uIEtlZXBzIGxvZ3MsIGRpc3BsYXlzIHRoZW0gb24gYSBkYXNoYm9hcmQgYW5kIHNlbmRzIGFsZXJ0cyB1cG9uIGNlcnRhaW4gIGNvbmRpdGlvbnMuIiAiR3JhZmFuYSIKCiAgICAgICAgICAgbm90aWZpZXIgPSBjb250YWluZXIgIk5vdGlmaWVyIiAiTm90aWZpZXMgdGhlIGNsaWVudCByZWdhcmRpbmcgdGhlIHN0YXRlIG9mIHRoZSByZXF1ZXN0LiIgIldlYiBTb2NrZXQgU2VydmVyIgogICAgICAgIH0KICAgICAgICAKICAgICAgICBzdWkgPSBzb2Z0d2FyZVN5c3RlbSAiU3VpIE5ldHdvcmsiICJDb250YWlucyB0aGUgc21hcnQgY29udHJhY3QuIgoKICAgICAgICAjIENvbnRleHQgbGV2ZWwgcmVsYXRpb25zaGlwcwogICAgICAgIGNsaWVudCAtPiBtaW50aW5nU2VydmVyICJSZXF1ZXN0IGZvciBzdWkgdHJhbnNhY3Rpb24iCiAgICAgICAgbWludGluZ1NlcnZlciAtPiBzdWkgIkV4ZWN1dGVzIHRyYW5zYWN0aW9uIG9uIgoKICAgICAgICAjIENvbXBvbmVudCBsZXZlbCByZWxhdGlvbnNoaXBzCiAgICAgICAgY2xpZW50IC0+IHJlcXVlc3RIYW5kbGVyICJTZW5kcyByZXF1ZXN0IHRvIgogICAgICAgIHJlcXVlc3RIYW5kbGVyIC0+IGRhdGFiYXNlICJDaGVja3MgZWxpZ2liaWxpdHkgb2YgcmVxdWVzdCBiYXNlZCBvbiBidXNpbmVzcyBydWxlcyBhbmQgYWRkcyByZXF1ZXN0IHRvIHRoZSBxdWV1ZSIKICAgICAgICBkYXRhYmFzZSAtPiByZXF1ZXN0UHJvY2Vzc29yICJQdWxscyByZXF1ZXN0cyBmcm9tIgogICAgICAgIHJlcXVlc3RQcm9jZXNzb3IgLT4gc3VpICJNYWtlcyB0cmFuc2FjdGlvbiBjYWxscyB0byIKICAgICAgICBkYXRhYmFzZSAtPiByZXF1ZXN0TW9uaXRvciAiTW9uaXRvciBwdWxscyByZXF1ZXN0IGRhdGEgYW5kIGxvZ3MiCgogICAgICAgIHJlcXVlc3RQcm9jZXNzb3IgLT4gbm90aWZpZXIgIlNlbmRzIHRyYW5zYWN0aW9uIHJlc3VsdHMgdG8iCiAgICAgICAgbm90aWZpZXIgLT4gY2xpZW50ICJOb3RpZmllcyBjbGllbnQgdGhhdCB0aGUgcmVxdWVzdCdzIHRyYW5zYWN0aW9ucyBoYXMgYmVlbiBjb21wbGV0ZWQiCiAgICB9CgogICAgdmlld3MgewogICAgICAgIHN5c3RlbUNvbnRleHQgbWludGluZ1NlcnZlciAiQ29udGV4dCIgewogICAgICAgICAgICBpbmNsdWRlICoKICAgICAgICAgICAgYXV0b2xheW91dCBscgogICAgICAgIH0KCiAgICAgICAgY29udGFpbmVyIG1pbnRpbmdTZXJ2ZXIgIkNvbnRhaW5lciIgewogICAgICAgICAgICBpbmNsdWRlICoKCiAgICAgICAgfQoKICAgICAgICBzdHlsZXMgewogICAgICAgICAgICBlbGVtZW50ICJkYXRhYmFzZSIgewogICAgICAgICAgICAgICAgc2hhcGUgQ3lsaW5kZXIKICAgICAgICAgICAgfQogICAgICAgIH0KCiAgICAgICAgdGhlbWVzIGRlZmF1bHQKICAgIH0KfQo="
+  },
+  "configuration" : { },
+  "model" : {
+    "softwareSystems" : [ {
+      "id" : "1",
+      "tags" : "Element,Software System",
+      "properties" : {
+        "structurizr.dsl.identifier" : "client"
+      },
+      "name" : "Client",
+      "description" : "A client that needs to make a transaction.",
+      "relationships" : [ {
+        "id" : "9",
+        "tags" : "Relationship",
+        "properties" : {
+          "structurizr.dsl.identifier" : "862c71ce-1595-4338-8d88-f6a1cfe4b862"
+        },
+        "sourceId" : "1",
+        "destinationId" : "2",
+        "description" : "Request for sui transaction"
+      }, {
+        "id" : "11",
+        "tags" : "Relationship",
+        "properties" : {
+          "structurizr.dsl.identifier" : "7ca13498-dc84-4d51-ac71-c549aa0f7b45"
+        },
+        "sourceId" : "1",
+        "destinationId" : "3",
+        "description" : "Sends request to"
+      } ],
+      "location" : "Unspecified",
+      "documentation" : { }
+    }, {
+      "id" : "8",
+      "tags" : "Element,Software System",
+      "properties" : {
+        "structurizr.dsl.identifier" : "sui"
+      },
+      "name" : "Sui Network",
+      "description" : "Contains the smart contract.",
+      "location" : "Unspecified",
+      "documentation" : { }
+    }, {
+      "id" : "2",
+      "tags" : "Element,Software System",
+      "properties" : {
+        "structurizr.dsl.identifier" : "mintingserver"
+      },
+      "name" : "Minting Server",
+      "description" : "Processes request and executes the transaction.",
+      "relationships" : [ {
+        "id" : "18",
+        "sourceId" : "2",
+        "destinationId" : "1",
+        "description" : "Notifies client that the request's transactions has been completed",
+        "linkedRelationshipId" : "17"
+      }, {
+        "id" : "10",
+        "tags" : "Relationship",
+        "properties" : {
+          "structurizr.dsl.identifier" : "aa4baeb7-9f43-4704-a62a-a6bf865498e6"
+        },
+        "sourceId" : "2",
+        "destinationId" : "8",
+        "description" : "Executes transaction on"
+      } ],
+      "location" : "Unspecified",
+      "containers" : [ {
+        "id" : "7",
+        "tags" : "Element,Container",
+        "properties" : {
+          "structurizr.dsl.identifier" : "notifier"
+        },
+        "name" : "Notifier",
+        "description" : "Notifies the client regarding the state of the request.",
+        "relationships" : [ {
+          "id" : "17",
+          "tags" : "Relationship",
+          "properties" : {
+            "structurizr.dsl.identifier" : "adb56b7b-01e5-4bc2-a902-a8b874e137bf"
+          },
+          "sourceId" : "7",
+          "destinationId" : "1",
+          "description" : "Notifies client that the request's transactions has been completed"
+        } ],
+        "technology" : "Web Socket Server",
+        "documentation" : { }
+      }, {
+        "id" : "6",
+        "tags" : "Element,Container",
+        "properties" : {
+          "structurizr.dsl.identifier" : "requestmonitor"
+        },
+        "name" : "Request Monitor",
+        "description" : "Tracks the request states and the traffic of the system. Keeps logs, displays them on a dashboard and sends alerts upon certain  conditions.",
+        "technology" : "Grafana",
+        "documentation" : { }
+      }, {
+        "id" : "4",
+        "tags" : "Element,Container",
+        "properties" : {
+          "structurizr.dsl.identifier" : "requestprocessor"
+        },
+        "name" : "Request Processor",
+        "description" : "Processes requests and executes them.",
+        "relationships" : [ {
+          "id" : "14",
+          "tags" : "Relationship",
+          "properties" : {
+            "structurizr.dsl.identifier" : "cd7ca6ac-5a2a-49eb-818f-3835957619b8"
+          },
+          "sourceId" : "4",
+          "destinationId" : "8",
+          "description" : "Makes transaction calls to"
+        }, {
+          "id" : "16",
+          "tags" : "Relationship",
+          "properties" : {
+            "structurizr.dsl.identifier" : "4ef6c698-b174-4188-83ba-289dea611a81"
+          },
+          "sourceId" : "4",
+          "destinationId" : "7",
+          "description" : "Sends transaction results to"
+        } ],
+        "group" : "worker",
+        "documentation" : { }
+      }, {
+        "id" : "3",
+        "tags" : "Element,Container",
+        "properties" : {
+          "structurizr.dsl.identifier" : "requesthandler"
+        },
+        "name" : "Request Handler API",
+        "description" : "Checks the eligibility of the request. e.g. only one mint per client",
+        "relationships" : [ {
+          "id" : "12",
+          "tags" : "Relationship",
+          "properties" : {
+            "structurizr.dsl.identifier" : "53fbc1ca-69b0-4375-87a6-92abbd2369b3"
+          },
+          "sourceId" : "3",
+          "destinationId" : "5",
+          "description" : "Checks eligibility of request based on business rules and adds request to the queue"
+        } ],
+        "group" : "worker",
+        "technology" : "express.js",
+        "documentation" : { }
+      }, {
+        "id" : "5",
+        "tags" : "Element,Container,database",
+        "properties" : {
+          "structurizr.dsl.identifier" : "database"
+        },
+        "name" : "Database",
+        "description" : "Contains request queues to be processed by workers and keeps track of the request states.",
+        "relationships" : [ {
+          "id" : "13",
+          "tags" : "Relationship",
+          "properties" : {
+            "structurizr.dsl.identifier" : "32b62980-a485-49bf-8752-e43ac1216112"
+          },
+          "sourceId" : "5",
+          "destinationId" : "4",
+          "description" : "Pulls requests from"
+        }, {
+          "id" : "15",
+          "tags" : "Relationship",
+          "properties" : {
+            "structurizr.dsl.identifier" : "c899a242-9901-48d4-9a07-d9e7a773952f"
+          },
+          "sourceId" : "5",
+          "destinationId" : "6",
+          "description" : "Monitor pulls request data and logs"
+        } ],
+        "technology" : "Redis",
+        "documentation" : { }
+      } ],
+      "documentation" : { }
+    } ]
+  },
+  "documentation" : { },
+  "views" : {
+    "systemContextViews" : [ {
+      "key" : "Context",
+      "order" : 1,
+      "softwareSystemId" : "2",
+      "dimensions" : {
+        "width" : 2350,
+        "height" : 786
+      },
+      "automaticLayout" : {
+        "implementation" : "Graphviz",
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 300,
+        "nodeSeparation" : 300,
+        "edgeSeparation" : 0,
+        "vertices" : false,
+        "applied" : true
+      },
+      "enterpriseBoundaryVisible" : true,
+      "elements" : [ {
+        "id" : "1",
+        "x" : 199,
+        "y" : 257
+      }, {
+        "id" : "2",
+        "x" : 949,
+        "y" : 257
+      }, {
+        "id" : "8",
+        "x" : 1699,
+        "y" : 257
+      } ],
+      "relationships" : [ {
+        "id" : "18",
+        "vertices" : [ {
+          "x" : 799,
+          "y" : 257
+        } ]
+      }, {
+        "id" : "9",
+        "vertices" : [ {
+          "x" : 799,
+          "y" : 557
+        } ]
+      }, {
+        "id" : "10"
+      } ]
+    } ],
+    "containerViews" : [ {
+      "key" : "Container",
+      "order" : 2,
+      "softwareSystemId" : "2",
+      "dimensions" : {
+        "width" : 2740,
+        "height" : 2031
+      },
+      "externalSoftwareSystemBoundariesVisible" : true,
+      "elements" : [ {
+        "id" : "1",
+        "x" : 2155,
+        "y" : 270
+      }, {
+        "id" : "3",
+        "x" : 1435,
+        "y" : 700
+      }, {
+        "id" : "4",
+        "x" : 685,
+        "y" : 695
+      }, {
+        "id" : "5",
+        "x" : 700,
+        "y" : 1245
+      }, {
+        "id" : "6",
+        "x" : 1445,
+        "y" : 1245
+      }, {
+        "id" : "7",
+        "x" : 1005,
+        "y" : 165
+      }, {
+        "id" : "8",
+        "x" : 80,
+        "y" : 320
+      } ],
+      "relationships" : [ {
+        "id" : "17"
+      }, {
+        "id" : "16"
+      }, {
+        "id" : "15"
+      }, {
+        "id" : "14"
+      }, {
+        "id" : "13"
+      }, {
+        "id" : "12"
+      }, {
+        "id" : "11"
+      } ]
+    } ],
+    "configuration" : {
+      "branding" : { },
+      "styles" : {
+        "elements" : [ {
+          "tag" : "database",
+          "shape" : "Cylinder"
+        } ]
+      },
+      "themes" : [ "https://static.structurizr.com/themes/default/theme.json" ],
+      "terminology" : { },
+      "metadataSymbols" : "SquareBrackets",
+      "lastSavedView" : "Context"
+    }
+  }
+}
