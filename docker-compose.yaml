@@ -14,7 +14,7 @@ services:
       - redis_data:/data
     command: redis-server --appendonly yes
   app:
-    build: .
+    build: request_handler
     depends_on:
       - redis
     volumes:
