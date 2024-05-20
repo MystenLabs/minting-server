@@ -1,10 +1,29 @@
 import express from "express";
+import * as redis from 'redis';
 
 const app = express();
 const port = 3000;
 
-app.post("/", (req: any, res: any) => {
-  res.send("Hello World!");
+const connectRedis = async () => {
+  const redisClient = redis.createClient();
+
+  redisClient.on('error', (err) => console.log('Redis Client Error', err));
+  await redisClient.connect();
+
+  return redisClient;
+};
+
+app.post("/", async (req: any, res: any) => {
+  try {
+    const redisClient = await connectRedis();
+    await redisClient.set('request-handler', 'rh-value');
+    const value = await redisClient.get('request-handler');
+    await redisClient.quit(); // Properly close the client after operation
+    res.send(`Added entry to redis: ${value}`);
+  } catch (error) {
+    console.error('Error interacting with Redis:', error);
+    res.status(500).send('Failed to interact with Redis');
+  }
 });
 
 app.listen(port, () => {
