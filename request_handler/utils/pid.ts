@@ -1,6 +1,6 @@
+/// Generates a PID by concatenating 2 Base36 random strings.
 export function generatePID() {
-  const unixTimestamp = Date.now();
-  return unixTimestamp + "-" + generateRandomBase36String();
+  return generateRandomBase36String() + generateRandomBase36String();
 }
 
 function generateRandomBase36String() {

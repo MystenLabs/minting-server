@@ -1,4 +1,4 @@
-import * as redis from "redis";
+import Bull from "bull";
 
 export type QueueObject = {
   id: String;
@@ -6,31 +6,34 @@ export type QueueObject = {
   type: String;
 };
 
-/// Establishes a connection with the queue and returns a client
-/// that is able to make reads and writes to it.
-export async function connectToQueue() {
-  const redisClient = redis.createClient({
-    socket: {
-      host: "localhost",
-      port: 6379,
-    },
-  });
+// TODO: Parse host & port from `.env`
+const redisConfig = {
+  host: "127.0.0.1", // Redis server address
+  port: 6379, // Redis server port
+  // username: TODO,
+  // password: TODO
+};
 
-  redisClient.on("error", (err) => console.log("Redis Client Error", err));
-  await redisClient.connect();
+const requestsQueue = new Bull("requests-queue", {
+  redis: redisConfig,
+  // Rate limiting to X requests (max) per Y seconds (duration).
+  limiter: {
+    max: 1000, // TODO: move to .env
+    duration: 5000, // TODO: move to .env
+  },
+});
 
-  return redisClient;
-}
+// Requests are automatically dequeued.
+// Here is defined how each request should be processed.
+requestsQueue.process(async (job, done) => {
+  console.log("Inside job process");
+  job.progress(0);
+  await new Promise((resolve) => setTimeout(resolve, 4000));
+  job.progress(100);
+  done();
+});
 
 /// Push a request to the queue in order to place it for consumption.
-export async function pushRequestToQueue(
-  queueObject: QueueObject,
-  queueClient: any,
-) {
-  await queueClient.LPUSH("requests-queue", JSON.stringify(queueObject));
-}
-
-/// Deque a request.
-export async function popRequestFromQueue(queueClient: redis.RedisClientType) {
-  await queueClient.RPOP("requests-queue");
+export async function enqueRequest(queueObject: QueueObject) {
+  await requestsQueue.add(queueObject);
 }

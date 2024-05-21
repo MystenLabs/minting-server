@@ -1,5 +1,5 @@
 import express from "express";
-import { connectToQueue, pushRequestToQueue } from "./queue";
+import { enqueRequest } from "./queue";
 import { generatePID } from "./utils/pid";
 import { body, validationResult } from "express-validator";
 
@@ -19,22 +19,26 @@ app.post(
     }
     // Proceed to push the request to the queue.
     try {
-      const queueClient = await connectToQueue();
-      await pushRequestToQueue(
-        {
-          id: generatePID(),
-          requestorAddress: req.body.address,
-          type: req.body.type,
-        },
-        queueClient,
-      );
-      await queueClient.quit(); // Properly close the client after operation
-      res.status(202).send(`Accepted: Request was successfully queued.`);
+      await enqueRequest({
+        id: generatePID(),
+        requestorAddress: req.body.address,
+        type: req.body.type,
+      });
+      return res.status(202).send(`Accepted: Request was successfully queued.`);
     } catch (error) {
-      res.status(500).send("Failed to interact with queuing service.");
+      return res.status(500).send("Failed to interact with queuing service.");
     }
   },
 );
+
+app.get("/", async (req: express.Request, res: express.Response) => {
+  try {
+    return res.status(200).send("OK");
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("Internal Server Error");
+  }
+});
 
 app.listen(port, () => {
   console.log(`RequestHandler running on port ${port}...`);
