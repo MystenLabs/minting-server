@@ -10,7 +10,7 @@ app.use(express.json());
 app.post(
   "/",
   body("address").trim().notEmpty(),
-  body("type").trim().notEmpty(),
+  body("type").trim().notEmpty(), // TODO: define the valid types and add check using custom validation rule.
   async (req: express.Request, res: express.Response) => {
     // First check if there have been any errors on validation.
     const errors = validationResult(req);
