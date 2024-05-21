@@ -3,7 +3,7 @@ import * as redis from "redis";
 export type QueueObject = {
   id: String;
   requestorAddress: String;
-  // type: TBD
+  type: String;
 };
 
 /// Establishes a connection with the queue and returns a client
