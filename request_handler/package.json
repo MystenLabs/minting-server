@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "bun --watch index.ts",
-    "build": "bun build ."
+    "build": "bun build . --target bun"
   },
   "keywords": [],
   "author": "",
@@ -18,8 +18,8 @@
     "redis": "^4.6.13"
   },
   "devDependencies": {
-    "@types/node": "^20.12.7",
-    "@types/bun": "latest"
+    "@types/bun": "^1.1.2",
+    "@types/node": "^20.12.7"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"

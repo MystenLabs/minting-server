@@ -1,21 +1,12 @@
 import express from "express";
-import * as redis from 'redis';
+import { connectToQueue } from "./utils/queue";
 
 const app = express();
 const port = 3000;
 
-const connectRedis = async () => {
-  const redisClient = redis.createClient();
-
-  redisClient.on('error', (err) => console.log('Redis Client Error', err));
-  await redisClient.connect();
-
-  return redisClient;
-};
-
 app.post("/", async (req: any, res: any) => {
   try {
-    const redisClient = await connectRedis();
+    const redisClient = await connectToQueue();
     await redisClient.set('request-handler', 'rh-value');
     const value = await redisClient.get('request-handler');
     await redisClient.quit(); // Properly close the client after operation
