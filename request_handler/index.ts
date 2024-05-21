@@ -1,21 +1,24 @@
 import express from "express";
-import { connectToQueue } from "./utils/queue";
+import { connectToQueue, pushRequestToQueue } from "./queue";
+import { generatePID } from "./utils/pid";
 
 const app = express();
 const port = 3000;
-
+app.use(express.json());
 app.post("/", async (req: express.Request, res: express.Response) => {
   try {
-    const redisClient = await connectToQueue();
-    await redisClient.set('request-handler', 'rh-value');
-
-    const value = await redisClient.get('request-handler');
-    await redisClient.quit(); // Properly close the client after operation
-
-    res.status(202).send(`Added entry to redis: ${value}`);
+    const queueClient = await connectToQueue();
+    await pushRequestToQueue(
+      {
+        id: generatePID(),
+        requestorAddress: req.body.address,
+      },
+      queueClient,
+    );
+    await queueClient.quit(); // Properly close the client after operation
+    res.status(202).send(`Accepted: Request was successfully queued.`);
   } catch (error) {
-    console.error('Error to interact with queuing service:', error);
-    res.status(500).send('Failed to interact with queuing service.');
+    res.status(500).send("Failed to interact with queuing service.");
   }
 });
 
