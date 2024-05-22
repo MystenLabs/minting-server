@@ -1,10 +1,22 @@
 import express from "express";
-import { enqueRequest } from "./queue";
+import { enqueRequest, requestsQueue } from "./queue";
 import { generatePID } from "./utils/pid";
 import { body, validationResult } from "express-validator";
+import { createBullBoard } from "@bull-board/api";
+import { BullMQAdapter } from "@bull-board/api/bullMQAdapter";
+import { ExpressAdapter } from "@bull-board/express";
 
 const app = express();
-const port = 3000;
+
+const serverAdapter = new ExpressAdapter();
+serverAdapter.setBasePath("/");
+
+createBullBoard({
+  queues: [new BullMQAdapter(requestsQueue)],
+  serverAdapter: serverAdapter,
+});
+
+app.use("/", serverAdapter.getRouter());
 app.use(express.json());
 
 app.post(
@@ -40,6 +52,7 @@ app.get("/", async (req: express.Request, res: express.Response) => {
   }
 });
 
+const port = 3000;
 app.listen(port, () => {
   console.log(`RequestHandler running on port ${port}...`);
 });

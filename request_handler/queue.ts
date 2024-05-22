@@ -15,7 +15,7 @@ export type QueueObject = {
   type: String;
 };
 
-const requestsQueue = new Queue("requests-queue", {
+export const requestsQueue = new Queue("requests-queue", {
   connection: redisConfig,
 });
 
@@ -46,7 +46,7 @@ for (let i = 0; i < 5; i++) {
       factor for every worker, so that the resources of every machine where the worker
       is running are used more efficiently.
       */
-      concurrency: 200, // number of jobs a single worker can do in parallel
+      concurrency: 100, // number of jobs a single worker can do in parallel
     },
   );
 }
