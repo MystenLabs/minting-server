@@ -8,17 +8,17 @@ import { ExpressAdapter } from "@bull-board/express";
 
 const app = express();
 
+// Connect BullMQ UI board to monitor the jobs in a nice UI
 const serverAdapter = new ExpressAdapter();
 serverAdapter.setBasePath("/");
-
 createBullBoard({
   queues: [new BullMQAdapter(requestsQueue)],
   serverAdapter: serverAdapter,
 });
-
 app.use("/", serverAdapter.getRouter());
-app.use(express.json());
 
+// Set up the express endpoints
+app.use(express.json());
 app.post(
   "/",
   body("address").trim().notEmpty(),
@@ -43,12 +43,12 @@ app.post(
   },
 );
 
-app.get("/", async (req: express.Request, res: express.Response) => {
+app.get("/healthcheck", async (_: express.Request, res: express.Response) => {
   try {
-    return res.status(200).send("OK");
+    return res.status(200).send("OK.");
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Internal Server Error");
+    return res.status(500).send("Internal server error!");
   }
 });
 

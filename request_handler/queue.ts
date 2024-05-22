@@ -26,6 +26,7 @@ for (let i = 0; i < 5; i++) {
   */
   new Worker(
     "requests-queue",
+    // Example job processing - this is the place where we will do the minting
     async (job) => {
       console.log(`Processing ${job.data.id} - ts: ` + Date.now());
       job.updateProgress(0);
