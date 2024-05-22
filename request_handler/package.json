@@ -16,11 +16,9 @@
     "@mysten/sui.js": "^0.51.2",
     "@types/bull": "^4.10.0",
     "@types/express": "^4.17.21",
-    "bull": "^4.12.7",
+    "bullmq": "^5.7.10",
     "express": "^4.19.2",
-    "express-validator": "^7.1.0",
-    "install": "^0.13.0",
-    "redis": "^4.6.13"
+    "express-validator": "^7.1.0"
   },
   "devDependencies": {
     "@types/bun": "^1.1.2",
