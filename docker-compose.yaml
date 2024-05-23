@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   structurizr:
     image: structurizr/lite:latest
@@ -21,5 +21,17 @@ services:
       - .:/usr/src/minting_server/request_handler
     ports:
       - "3000:3000"
+    environment:
+      - REDIS_HOST=queue
+      - REDIS_PORT=6379
+      - NODE_ENV=development
+  request_processor:
+    build: ./request_processor
+    depends_on:
+      - queue
+    environment:
+      - REDIS_HOST=queue
+      - REDIS_PORT=6379
+      - NODE_ENV=development
 volumes:
   queue_data:

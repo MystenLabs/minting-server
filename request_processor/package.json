@@ -1,0 +1,8 @@
+{
+  "dependencies": { "bullmq": "^5.7.11" },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "bun index.ts",
+    "build": "bun build . --target bun"
+  }
+}
