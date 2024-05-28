@@ -6,20 +6,20 @@ services:
       - ./docs:/usr/local/structurizr
     ports:
       - "8080:8080"
-  redis:
+  queue:
     image: redis:latest
     ports:
       - "6379:6379"
     volumes:
-      - redis_data:/data
+      - queue_data:/data
     command: redis-server --appendonly yes
-  app:
-    build: .
+  request_handler:
+    build: request_handler
     depends_on:
-      - redis
+      - queue
     volumes:
-      - .:/usr/src/minting_server/app
+      - .:/usr/src/minting_server/request_handler
     ports:
       - "3000:3000"
 volumes:
-  redis_data:
+  queue_data:
