@@ -4,3 +4,5 @@ dist
 .env
 node_modules
 .idea/
+build/
+Move.lock
