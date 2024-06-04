@@ -1,5 +1,6 @@
 {
-  "dependencies": { "bullmq": "^5.7.11" },
+  "type":"module",
+  "dependencies": { "@mysten/sui": "^1.0.5", "bullmq": "^5.7.11" },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "bun index.ts",
