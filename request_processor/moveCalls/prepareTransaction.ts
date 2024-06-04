@@ -2,29 +2,29 @@ import { PACKAGE_ADDRESS, ADMIN_CAP } from "../utils/config";
 
 import { Transaction } from "@mysten/sui/transactions";
 
-export async function prepareTransactionBlock(receivers: string[]) {
-    const txb = new Transaction();
+export async function prepareTransaction(receivers: string[]) {
+    const tx = new Transaction();
     
     for (const receiver of receivers) {
-        await addMoveCall(receiver, txb);
+        await addMoveCall(receiver, tx);
     }
 
-    return txb;
+    return tx;
 }
 
 const addMoveCall = async (
     receiver: string,
-    txb: Transaction,
+    tx: Transaction,
 ) => {
 
-    let nft = txb.moveCall({
+    let nft = tx.moveCall({
         target: `${PACKAGE_ADDRESS}::contract_example::mint_nft`,
         arguments: [
-            txb.object(ADMIN_CAP)
+            tx.object(ADMIN_CAP)
         ],
     });
 
-    txb.transferObjects([nft], txb.pure.address(receiver));
+    tx.transferObjects([nft], tx.pure.address(receiver));
 
-    return txb;
+    return tx;
 }

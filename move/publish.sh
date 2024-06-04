@@ -9,11 +9,11 @@ for i in jq curl sui; do
   fi
 done
 
-NETWORK=http://localhost:9000
-BACKEND_API=http://localhost:3000
-FAUCET=https://localhost:9000/gas
+NETWORK=https://rpc.testnet.sui.io:443
+BACKEND_API=https://faucet.testnet.sui.io/gas
+FAUCET=https://api-testnet.suifrens.sui.io
 
-MOVE_PACKAGE_PATH=move/contract_example
+MOVE_PACKAGE_PATH=contract_example
 
 if [ $# -ne 0 ]; then
   if [ $1 = "testnet" ]; then
@@ -53,7 +53,6 @@ PACKAGE_ID=$(echo "$publishedObjs" | jq -r '.packageId')
 
 newObjs=$(echo "$publish_res" | jq -r '.objectChanges[] | select(.type == "created")')
 
-# PUBLISHER_ID=$(echo "$newObjs" | jq -r 'select (.objectType | contains("package::Publisher")).objectId')
 ADMIN_ID=$(echo "$newObjs" | jq -r 'select (.objectType | contains("AdminCap")).objectId')
 
 
@@ -62,26 +61,11 @@ if [ $# -eq 0 ]; then
   suffix=".localnet"
 fi
 
-cat >.env<<-API_ENV
+cat >../.env<<-API_ENV
 SUI_NETWORK=$NETWORK
 BACKEND_API=$BACKEND_API
 PACKAGE_ADDRESS=$PACKAGE_ID
 ADMIN_CAP=$ADMIN_ID
 API_ENV
-
-# cat >../app/.env$suffix<<-VITE_API_ENV
-# NEXT_PUBLIC_SUI_NETWORK=$NETWORK
-# NEXT_PUBLIC_PACKAGE=$PACKAGE_ID
-# NEXT_PUBLIC_BACKEND_API=$BACKEND_API
-# VITE_API_ENV
-
-# commented out as the POC template does not have an api directory
-
-# cat >../api/.env$suffix<<-BACKEND_API_ENV
-# SUI_NETWORK=$NETWORK
-# BACKEND_API=$BACKEND_API
-# PACKAGE_ADDRESS=$PACKAGE_ID
-# ADMIN_ADDRESS=$ADMIN_ADDRESS
-# BACKEND_API_ENV
 
 echo "Contract Deployment finished!"
