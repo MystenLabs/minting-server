@@ -3,7 +3,6 @@ import { Ed25519Keypair } from "@mysten/sui.js/keypairs/ed25519";
 import { SuiClient, getFullnodeUrl } from "@mysten/sui.js/client";
 import { ADMIN_SECRET_KEY } from "../lib/config";
 import { prepareTransactionBlock } from "./prepareTransaction";
-import { TransactionBlock } from "@mysten/sui.js/transactions";
 
 
 const suiClient = new SuiClient({url: getFullnodeUrl('testnet')});

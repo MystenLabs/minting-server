@@ -1,9 +1,18 @@
 {
-	"dependencies": {
-		"@mysten/sui.js": "^0.54.1",
-		"dotenv": "^16.4.5"
-	},
-	"devDependencies": {
-		"@types/node": "^20.14.0"
-	}
+  "name": "minting-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@mysten/sui.js": "^0.54.1",
+    "dotenv": "^16.4.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
 }

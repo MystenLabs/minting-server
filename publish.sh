@@ -13,7 +13,7 @@ NETWORK=http://localhost:9000
 BACKEND_API=http://localhost:3000
 FAUCET=https://localhost:9000/gas
 
-MOVE_PACKAGE_PATH=../move/poc
+MOVE_PACKAGE_PATH=move/contract_example
 
 if [ $# -ne 0 ]; then
   if [ $1 = "testnet" ]; then
@@ -69,11 +69,11 @@ PACKAGE_ADDRESS=$PACKAGE_ID
 ADMIN_CAP=$ADMIN_ID
 API_ENV
 
-cat >../app/.env$suffix<<-VITE_API_ENV
-NEXT_PUBLIC_SUI_NETWORK=$NETWORK
-NEXT_PUBLIC_PACKAGE=$PACKAGE_ID
-NEXT_PUBLIC_BACKEND_API=$BACKEND_API
-VITE_API_ENV
+# cat >../app/.env$suffix<<-VITE_API_ENV
+# NEXT_PUBLIC_SUI_NETWORK=$NETWORK
+# NEXT_PUBLIC_PACKAGE=$PACKAGE_ID
+# NEXT_PUBLIC_BACKEND_API=$BACKEND_API
+# VITE_API_ENV
 
 # commented out as the POC template does not have an api directory
 
