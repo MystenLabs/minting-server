@@ -45,13 +45,14 @@ const worker = new Worker(
 
 worker.on('completed', async (job: Job) => {
   // Send a message to the notifier server
-  socket.send(`COMPLETED: ${JSON.stringify(job.returnvalue)}`);
+  socket.send(JSON.stringify(
+    {
+      jobData: job.data,
+      returnValue: job.returnvalue
+    }
+  ));
 })
 
-worker.on('progress', async (job: Job) => {
-  // Called whenever a job is moved to failed by any worker.
-  socket.send(`PROGRESS: job ${job.id} - ${ job.progress }%`)
-});
 
 worker.on('error', err => {
   // [WARNING] If the error handler is missing, the worker may stop processing jobs when an error is emitted!

@@ -16,7 +16,7 @@ const server = Bun.serve({
             console.log(`Incoming message: ${message}`);
             // TODO: only broadcast when receiving message from request processor
             // ie. authenticate the request processor using a token
-            server.publish(topic, `Broadcasting: ${message}`);
+            server.publish(topic, message);
         },
         close(_){
             console.log("Connection to notifier service has been closed!");
