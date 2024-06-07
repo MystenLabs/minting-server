@@ -1,4 +1,5 @@
 import { Job, Worker } from "bullmq";
+import { executeTransaction } from "./moveCalls/executeTransaction";
 
 const redisConfig = {
   host: process.env.REDIS_HOST || "127.0.0.1",
@@ -17,18 +18,20 @@ const worker = new Worker(
   async (job) => {
     // TODO: add move calls here
     console.log(`Processing ${job.data.id} - ts: ` + Date.now());
-    job.updateProgress(0);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    job.updateProgress(25);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    job.updateProgress(50);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    job.updateProgress(75);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    job.updateProgress(100);
-
-    // TODO Add the result of the sui transaction here.
-    return {jobId: job.id, result: "OK"}
+    
+    if (job.data.type === 'mint') {
+      try {
+        const resp = await executeTransaction([job.data.requestorAddress], job);
+        console.log(`Transaction result:`, resp);
+        job.updateProgress(100);
+        return { jobId: job.id, result: resp.status, digest: resp.digest };
+      } catch (e) {
+        console.error(`Error executing transaction for job ${job.data.id}:`, e);
+        throw e;
+      }
+    } else {
+      return { jobId: job.id, result: "Transaction failed" };
+    }
   },
   {
     name: `worker-${process.env.HOSTNAME ? "container-" + process.env.HOSTNAME : "localhost"}`,
@@ -39,7 +42,7 @@ const worker = new Worker(
     factor for every worker, so that the resources of every machine where the worker
     is running are used more efficiently.
     */
-    concurrency: 1,
+    concurrency: 2,
   },
 );
 
@@ -52,6 +55,22 @@ worker.on('completed', async (job: Job) => {
     }
   ));
 })
+
+worker.on('failed', (job?: Job, err?: Error, prev?: string) => {
+  if (!job || !err) {
+    console.error(`Failed job is undefined or error is undefined`);
+    return;
+  }
+
+  console.error(`Job failed: ${job.id} with error:`, err);
+
+  socket.send(JSON.stringify({
+    jobData: job.data,
+    error: err.message,
+  }));
+
+  // TODO add retry
+});
 
 
 worker.on('error', err => {

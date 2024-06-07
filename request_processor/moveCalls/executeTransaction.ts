@@ -3,6 +3,7 @@ import { Ed25519Keypair } from "@mysten/sui/keypairs/ed25519";
 import { SuiClient, getFullnodeUrl } from "@mysten/sui/client";
 import { ADMIN_SECRET_KEY } from "../utils/config";
 import { prepareTransaction} from "./prepareTransaction";
+import { Job } from "bullmq";
 
 
 const suiClient = new SuiClient({url: getFullnodeUrl('testnet')});
@@ -17,8 +18,9 @@ const adminKeypair = Ed25519Keypair.fromSecretKey(
 
 const adminAddress = adminKeypair.getPublicKey().toSuiAddress();
 
-export async function executeTransactionBlock(receivers: string[]) {
+export async function executeTransaction(receivers: string[], job: Job) {
     const transaction = await prepareTransaction(receivers)
+    job.updateProgress(50);
     const res = await suiClient.signAndExecuteTransaction({
         transaction: transaction,
         signer: adminKeypair,
@@ -28,5 +30,5 @@ export async function executeTransactionBlock(receivers: string[]) {
         }
     });
 
-    return res.effects?.status.status;
+    return {status: res.effects?.status.status, digest: res.digest};
 }
