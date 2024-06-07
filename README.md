@@ -15,18 +15,26 @@ From the root directory run
 `docker compose up -d --build`
 
 This will generate a network of the containers:
-- `request_handler`: The web server that accepts requests and saves the requests to the queue. (producer)
+- `request_handler`: The web server (producer) that accepts requests (jobs) and saves them to the `queue` service.
+You can access a [dashboard](https://github.com/felixmosh/bull-board) to monitor all the jobs on `localhost:3000`.
 - `queue`: A redis database that contains the queue of the requests (jobs) to be processed.
 - `request_processor`: A worker that processes (consumes) the requests that have been queued up.
+- `notifier`: A websocket server that exposes (publishes) the results of the jobs to clients.
+You can open a websocket connection in your terminal with `websocat ws://localhost:3001`.
 - `structurizr`: This is a service enables you to explore the C4 diagram of our implementation with an interactive UI on `localhost:8080`.
 
-Try it out: Send a `POST` request to `localhost:3000` with a body like the following:
+Try it out:
+```
+curl --request POST \
+  --url 'http://localhost:3000/?=' \
+  --header 'Content-Type: application/json' \
+  --header 'User-Agent: insomnia/9.2.0' \
+  --data '{
+	"address": "0xe40c8cf8b53822829b3a6dc9aea84b62653f60b771e9da4bd4e214cae851b87b", 
+	"type": "mint"
+}'
+```
 
-```json
-{
-  "address": "0x123...",
-  "type": "mint"
-}
 ```
 
 ## Tests

@@ -1,4 +1,4 @@
-import { Worker } from "bullmq";
+import { Job, Worker } from "bullmq";
 
 const redisConfig = {
   host: process.env.REDIS_HOST || "127.0.0.1",
@@ -7,7 +7,11 @@ const redisConfig = {
   // TODO password: process.env.REDIS_PASSWORD,
 };
 
-new Worker(
+const socket = new WebSocket(`ws://notifier:3001`);
+console.log('Connected to notifier websocket server');
+console.log(socket)
+
+const worker = new Worker(
   "requests-queue",
   // Example job processing - this is the place where we will do the minting
   async (job) => {
@@ -22,6 +26,9 @@ new Worker(
     job.updateProgress(75);
     await new Promise((resolve) => setTimeout(resolve, 3000));
     job.updateProgress(100);
+
+    // TODO Add the result of the sui transaction here.
+    return {jobId: job.id, result: "OK"}
   },
   {
     name: `worker-${process.env.HOSTNAME ? "container-" + process.env.HOSTNAME : "localhost"}`,
@@ -35,3 +42,19 @@ new Worker(
     concurrency: 1,
   },
 );
+
+worker.on('completed', async (job: Job) => {
+  // Send a message to the notifier server
+  socket.send(JSON.stringify(
+    {
+      jobData: job.data,
+      returnValue: job.returnvalue
+    }
+  ));
+})
+
+
+worker.on('error', err => {
+  // [WARNING] If the error handler is missing, the worker may stop processing jobs when an error is emitted!
+  console.error(err);
+});

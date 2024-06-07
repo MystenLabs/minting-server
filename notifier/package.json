@@ -1,0 +1,16 @@
+{
+  "name": "notifier",
+  "module": "websocket.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "^1.1.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "bun index.ts",
+    "build": "bun build . --target bun"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

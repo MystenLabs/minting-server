@@ -23,7 +23,7 @@ COPY . .
 
 # [optional] tests & build
 ENV NODE_ENV=production
-# RUN bun test
+RUN bun test
 RUN bun run build
 
 # copy production dependencies and source code into final image
@@ -32,11 +32,10 @@ COPY --from=install /temp/prod/node_modules node_modules
 COPY --from=prerelease /usr/src/app/index.ts .
 COPY --from=prerelease /usr/src/app/package.json .
 COPY --from=prerelease /usr/src/app/ .
-COPY --from=prerelease /usr/src/app/utils/ utils/
 
 
 # run the app
 USER bun
 EXPOSE 3000/tcp
 WORKDIR /usr/src/app/
-ENTRYPOINT [ "bun", "run", "dev" ]
+ENTRYPOINT [ "bun", "index.ts" ]
