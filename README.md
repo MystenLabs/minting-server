@@ -35,8 +35,6 @@ curl --request POST \
 }'
 ```
 
-```
-
 ## Tests
 
 ### Request Handler
