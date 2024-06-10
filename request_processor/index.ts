@@ -18,11 +18,15 @@ const worker = new Worker(
   async (job) => {
     // TODO: add move calls here
     console.log(`Processing ${job.data.id} - ts: ` + Date.now());
-    
+
     if (job.data.type === 'mint') {
       try {
+        job.updateProgress(10)
         const resp = await executeTransaction([job.data.requestorAddress], job);
-        console.log(`Transaction result:`, resp);
+        job.updateProgress(90)
+        if (resp.status === 'failure') {
+          throw new Error(`Transaction failed: ${resp.status}`);
+        }
         job.updateProgress(100);
         return { jobId: job.id, result: resp.status, digest: resp.digest };
       } catch (e) {
@@ -30,7 +34,7 @@ const worker = new Worker(
         throw e;
       }
     } else {
-      return { jobId: job.id, result: "Transaction failed" };
+      return { jobId: job.id, result: "Transaction failed: No such transaction type." };
     }
   },
   {
@@ -75,5 +79,5 @@ worker.on('failed', (job?: Job, err?: Error, prev?: string) => {
 
 worker.on('error', err => {
   // [WARNING] If the error handler is missing, the worker may stop processing jobs when an error is emitted!
-  console.error(err);
+  console.error("Worker error:", err);
 });
