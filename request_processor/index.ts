@@ -22,7 +22,7 @@ const worker = new Worker(
     if (job.data.type === 'mint') {
       try {
         job.updateProgress(10)
-        const resp = await executeTransaction([job.data.requestorAddress], job);
+        const resp = await executeTransaction([job.data.requestorAddress]);
         job.updateProgress(90)
         if (resp.status === 'failure') {
           throw new Error(`Transaction failed: ${resp.status}`);
@@ -46,7 +46,7 @@ const worker = new Worker(
     factor for every worker, so that the resources of every machine where the worker
     is running are used more efficiently.
     */
-    concurrency: 2,
+    concurrency: 10,
   },
 );
 

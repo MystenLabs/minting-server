@@ -20,16 +20,16 @@ const adminKeypair = Ed25519Keypair.fromSecretKey(
 const executor = new ParallelTransactionExecutor({
   client: suiClient,
   signer: adminKeypair,
-
+  coinBatchSize: 20,
+  initialCoinBalance: 5_000_000_000n,
+  minimumCoinBalance: 500_000_000n,
   // The maximum number of gas coins to keep in the gas pool,
   // which also limits the maximum number of concurrent transactions
-  maxPoolSize: 50,
+  maxPoolSize: 10,
 })
 
-export async function executeTransaction(receivers: string[], job: Job) {
+export async function executeTransaction(receivers: string[]) {
     const transaction = await prepareTransaction(receivers)
-    job.updateProgress(50);
-
     const res = await executor.executeTransaction(transaction)
 
     return {status: res.effects, digest: res.digest};
