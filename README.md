@@ -10,7 +10,24 @@ a producer-consumer worker scheme.
 
 ## Local Setup
 
-From the root directory run
+To test the system locally, you need to first publish an example smart contract.
+We provide an example contract in the `move` directory.
+
+Simply run `cd move/ && chmod +x ./publish.sh && ./publish.sh` to deploy the contract to the Sui network.
+A `.publish.res.json` file will be generated with important information that the `request_processor` service 
+will need to process the requests.
+
+Create a `.env` file in the `request_processor/` directory with the following content:
+
+```bash
+# parse these from `move/.publish.res.json` file generated after `./publish.sh` completes successfully
+PACKAGE_ADDRESS=0x...
+ADMIN_CAP=0x...
+# parse the secret key from the `$ cat ~/.sui/sui_config/sui.keystore`
+ADMIN_SECRET_KEY=...
+```
+
+Then, to set up the cluster simply run:
 
 `docker compose up -d --build`
 
