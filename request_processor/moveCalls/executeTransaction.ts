@@ -3,7 +3,6 @@ import { Ed25519Keypair } from "@mysten/sui/keypairs/ed25519";
 import { SuiClient, getFullnodeUrl } from "@mysten/sui/client";
 import { ADMIN_SECRET_KEY } from "../utils/config";
 import { prepareTransaction} from "./prepareTransaction";
-import { Job } from "bullmq";
 import { ParallelTransactionExecutor } from "@mysten/sui/transactions";
 
 
