@@ -19,7 +19,35 @@ createBullBoard({
 });
 app.use("/", serverAdapter.getRouter());
 
-// Set up the express endpoints
+async function enqueueBatchBuffer(req: express.Request) {
+  const bufferIsFull = batchBuffer.length >= maxBatchSize;
+  if (bufferIsFull) {
+    console.log(
+      `Buffer is full (${batchBuffer.length}/${maxBatchSize}), sending batch to queue...`,
+    );
+    await enqueRequest(batchBuffer);
+    batchBuffer = []; // Empty buffer
+  } else {
+    console.log(
+      `Adding request to buffer... ${batchBuffer.length}/${maxBatchSize}`,
+    );
+    batchBuffer.push({
+      id: generatePID(),
+      requestorAddress: req.body.address,
+      type: req.body.type,
+    });
+    setInterval(async () => {
+      if (batchBuffer.length > 0) {
+        console.log(
+          `Stale buffer detected (size ${batchBuffer.length}/${maxBatchSize}). Sending batch to queue...`,
+        );
+        await enqueRequest(batchBuffer);
+        batchBuffer = []; // Empty buffer
+      }
+    }, 100);
+  }
+}
+
 app.use(express.json());
 app.post(
   "/",
@@ -33,20 +61,7 @@ app.post(
     }
     // Proceed to push the request to the queue.
     try {
-
-      const bufferIsFull = batchBuffer.length >= maxBatchSize;
-      if (bufferIsFull) {
-        console.log(`Buffer is full (${batchBuffer.length}/${maxBatchSize}), sending batch to queue...`)
-        await enqueRequest(batchBuffer);
-        batchBuffer = []; // Empty buffer
-      } else {
-        console.log(`Adding request to buffer... ${batchBuffer.length}/${maxBatchSize}`)
-        batchBuffer.push({
-          id: generatePID(),
-          requestorAddress: req.body.address,
-          type: req.body.type,
-        });
-      }
+      await enqueueBatchBuffer(req);
       return res.status(202).send(`Accepted: Request was successfully queued.`);
     } catch (error) {
       return res.status(500).send("Failed to interact with queuing service.");
