@@ -8,6 +8,7 @@ import { ExpressAdapter } from "@bull-board/express";
 
 export const app = express();
 const maxBatchSize = 5;
+const staleBufferTimeout = 1500;
 let batchBuffer = new Array<QueueObject>();
 
 // Connect BullMQ UI board to monitor the jobs in a nice UI
@@ -44,7 +45,7 @@ async function enqueueBatchBuffer(req: express.Request) {
         await enqueRequest(batchBuffer);
         batchBuffer = []; // Empty buffer
       }
-    }, 100);
+    }, staleBufferTimeout);
   }
 }
 
