@@ -1,4 +1,3 @@
-version: "3"
 services:
   structurizr:
     image: structurizr/lite:latest
@@ -33,6 +32,13 @@ services:
       - REDIS_HOST=queue
       - REDIS_PORT=6379
       - NODE_ENV=development
+    deploy:
+      mode: replicated
+      # Change the number of replicas to increase the number of request processors
+      # Warning! You will need a different admin account for each request processor
+      # because Sui's paralleltransactionexecutor assumes that there is only one instance
+      # of it per account.
+      replicas: 1
   notifier:
     build: notifier
     depends_on:
