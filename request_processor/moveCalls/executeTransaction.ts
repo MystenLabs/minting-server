@@ -4,6 +4,7 @@ import { SuiClient, getFullnodeUrl } from "@mysten/sui/client";
 import { ADMIN_SECRET_KEY } from "../utils/config";
 import { prepareTransaction} from "./prepareTransaction";
 import { ParallelTransactionExecutor } from "@mysten/sui/transactions";
+import { QueueObject } from "../../request_handler/queue";
 
 
 const suiClient = new SuiClient({url: getFullnodeUrl('testnet')});
@@ -27,7 +28,7 @@ const executor = new ParallelTransactionExecutor({
   maxPoolSize: 10,
 })
 
-export async function executeTransaction(receivers: string[]) {
+export async function executeTransaction(receivers: QueueObject[]) {
     const transaction = await prepareTransaction(receivers)
     const res = await executor.executeTransaction(transaction)
 

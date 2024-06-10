@@ -1,12 +1,13 @@
+import { QueueObject } from "../../request_handler/queue";
 import { PACKAGE_ADDRESS, ADMIN_CAP } from "../utils/config";
 
 import { Transaction } from "@mysten/sui/transactions";
 
-export async function prepareTransaction(receivers: string[]) {
+export async function prepareTransaction(jobData: QueueObject[]) {
     const tx = new Transaction();
-    
+    const receivers = jobData.map(data => data.requestorAddress)
     for (const receiver of receivers) {
-        await addMoveCall(receiver, tx);
+        await addMoveCall(String(receiver), tx);
     }
 
     return tx;
