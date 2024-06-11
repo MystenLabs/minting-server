@@ -40,7 +40,7 @@ async function enqueueBatchBuffer(req: express.Request) {
     });
     if (!staleBufferIntervalRunning) {
       staleBufferIntervalRunning = true;
-      setInterval(async () => {
+      setTimeout(async () => {
         staleBufferIntervalRunning = false;
         if (batchBuffer.length > 0) {
           console.log(
