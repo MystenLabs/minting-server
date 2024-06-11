@@ -14,22 +14,16 @@ To test the system locally, you need to first publish an example smart contract.
 We provide an example contract in the `move` directory.
 
 Simply run `cd move/ && chmod +x ./publish.sh && ./publish.sh` to deploy the contract to the Sui network.
-A `.publish.res.json` file will be generated with important information that the `request_processor` service 
-will need to process the requests.
+A `.publish.res.json` file will be generated with important information that you will need to set up the cluster.
+These fields are used to configure the `request_processor` service and test the system using an example smart contract.
 
-Create a `.env` file in the `request_processor/` directory with the following content:
-
-```bash
-# parse these from `move/.publish.res.json` file generated after `./publish.sh` completes successfully
-PACKAGE_ADDRESS=0x...
-ADMIN_CAP=0x...
-# parse the secret key from the `$ cat ~/.sui/sui_config/sui.keystore`
-ADMIN_SECRET_KEY=...
-```
+Create a `.env` file to the root directory directory as indicated in the `.env.example` file.
 
 Then, to set up the cluster simply run:
 
 `docker compose up -d --build`
+
+> Tip: to quickly test your changes back to back, rebuild the services use `docker compose down && docker compose up -d --build --force-recreate`.
 
 This will generate a network of the containers:
 - `request_handler`: The web server (producer) that accepts requests (jobs) and saves them to the `queue` service.
@@ -47,7 +41,7 @@ curl --request POST \
   --header 'Content-Type: application/json' \
   --header 'User-Agent: insomnia/9.2.0' \
   --data '{
-	"address": "0xe40c8cf8b53822829b3a6dc9aea84b62653f60b771e9da4bd4e214cae851b87b", 
+	"address": "0xe40c8cf8b53822829b3a6dc9aea84b62653f60b771e9da4bd4e214cae851b87b",
 	"type": "mint"
 }'
 ```
