@@ -7,8 +7,9 @@ import { BullMQAdapter } from "@bull-board/api/bullMQAdapter";
 import { ExpressAdapter } from "@bull-board/express";
 
 export const app = express();
-const maxBatchSize = 5;
-const staleBufferTimeout = 1500;
+const maxBatchSize = parseInt(process.env.BUFFER_SIZE ?? "10");
+const staleBufferTimeout = parseInt(process.env.STALE_BUFFER_TIMEOUT_MS ?? "10000");
+let staleBufferIntervalRunning = false;
 let batchBuffer = new Array<QueueObject>();
 
 // Connect BullMQ UI board to monitor the jobs in a nice UI
@@ -37,15 +38,20 @@ async function enqueueBatchBuffer(req: express.Request) {
       requestorAddress: req.body.address,
       type: req.body.type,
     });
-    setInterval(async () => {
-      if (batchBuffer.length > 0) {
-        console.log(
-          `Stale buffer detected (size ${batchBuffer.length}/${maxBatchSize}). Sending batch to queue...`,
-        );
-        await enqueRequest(batchBuffer);
-        batchBuffer = []; // Empty buffer
-      }
-    }, staleBufferTimeout);
+    if (!staleBufferIntervalRunning) {
+      staleBufferIntervalRunning = true;
+      setTimeout(async () => {
+        staleBufferIntervalRunning = false;
+        if (batchBuffer.length > 0) {
+          console.log(
+            `Stale buffer detected (size ${batchBuffer.length}/${maxBatchSize}). Sending batch to queue...`,
+          );
+          await enqueRequest(batchBuffer);
+          batchBuffer = []; // Empty buffer
+        }
+      }, staleBufferTimeout);
+    }
+
   }
 }
 

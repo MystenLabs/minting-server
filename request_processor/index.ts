@@ -4,8 +4,7 @@ import { executeTransaction } from "./moveCalls/executeTransaction";
 const redisConfig = {
   host: process.env.REDIS_HOST || "127.0.0.1",
   port: Number(process.env.REDIS_PORT) || 6379,
-  // TODO username: process.env.REDIS_USER,
-  // TODO password: process.env.REDIS_PASSWORD,
+  password: process.env.REDIS_PASSWORD,
 };
 
 const socket = new WebSocket(`ws://notifier:3001`);
