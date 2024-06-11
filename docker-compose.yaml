@@ -9,9 +9,11 @@ services:
     image: redis:latest
     ports:
       - "6379:6379"
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
     volumes:
       - queue_data:/data
-    command: redis-server --appendonly yes
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
   request_handler:
     build: request_handler
     depends_on:
@@ -23,6 +25,7 @@ services:
     environment:
       - REDIS_HOST=queue
       - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
       - NODE_ENV=development
   request_processor:
     build: ./request_processor
@@ -31,6 +34,7 @@ services:
     environment:
       - REDIS_HOST=queue
       - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
       - NODE_ENV=development
     deploy:
       mode: replicated

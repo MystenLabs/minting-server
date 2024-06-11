@@ -4,8 +4,7 @@ import { generatePID } from "./utils/pid";
 const redisConfig = {
   host: process.env.REDIS_HOST ?? "127.0.0.1",
   port: Number(process.env.REDIS_PORT ?? 6379),
-  // TODO username: process.env.REDIS_USER,
-  // TODO password: process.env.REDIS_PASSWORD,
+  password: process.env.REDIS_PASSWORD,
 };
 
 export type QueueObject = {
