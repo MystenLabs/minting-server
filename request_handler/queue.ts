@@ -23,5 +23,12 @@ export async function enqueRequest(queueObjects: Array<QueueObject>) {
   await requestsQueue.add(
     `job-${generatePID()}`, // job name
     queueObjects, // payload
+    {
+      attempts: 3,
+      backoff: {
+        type: "exponential",
+        delay: 1000,
+      },
+    }
   );
 }
