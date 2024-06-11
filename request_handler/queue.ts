@@ -19,9 +19,9 @@ export const requestsQueue = new Queue("requests-queue", {
 });
 
 /// Push a request to the queue in order to place it for consumption.
-export async function enqueRequest(queueObject: QueueObject) {
+export async function enqueRequest(queueObjects: Array<QueueObject>) {
   await requestsQueue.add(
     `job-${generatePID()}`, // job name
-    queueObject, // payload
+    queueObjects, // payload
   );
 }

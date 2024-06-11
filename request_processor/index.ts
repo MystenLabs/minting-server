@@ -14,15 +14,11 @@ console.log(socket)
 
 const worker = new Worker(
   "requests-queue",
-  // Example job processing - this is the place where we will do the minting
   async (job) => {
-    // TODO: add move calls here
-    console.log(`Processing ${job.data.id} - ts: ` + Date.now());
-
-    if (job.data.type === 'mint') {
       try {
         job.updateProgress(10)
-        const resp = await executeTransaction([job.data.requestorAddress]);
+        console.log(`Executing transactions in bulk: ${job.data}`)
+        const resp = await executeTransaction(job.data);
         job.updateProgress(90)
         if (resp.status === 'failure') {
           throw new Error(`Transaction failed: ${resp.status}`);
@@ -30,12 +26,9 @@ const worker = new Worker(
         job.updateProgress(100);
         return { jobId: job.id, result: resp.status, digest: resp.digest };
       } catch (e) {
-        console.error(`Error executing transaction for job ${job.data.id}:`, e);
+        console.error(`Error executing bulk of transactions: ${job.data} - `, e);
         throw e;
       }
-    } else {
-      return { jobId: job.id, result: "Transaction failed: No such transaction type." };
-    }
   },
   {
     name: `worker-${process.env.HOSTNAME ? "container-" + process.env.HOSTNAME : "localhost"}`,
