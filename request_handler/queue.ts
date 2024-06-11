@@ -23,10 +23,10 @@ export async function enqueRequest(queueObjects: Array<QueueObject>) {
     `job-${generatePID()}`, // job name
     queueObjects, // payload
     {
-      attempts: 3,
+      attempts: Number(process.env.JOB_RETRIES ?? 3),
       backoff: {
         type: "exponential",
-        delay: 1000,
+        delay: Number(process.env.JOB_BACKOFF_DELAY ?? 1000),
       },
     }
   );

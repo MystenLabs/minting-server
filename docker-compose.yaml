@@ -26,6 +26,8 @@ services:
       - REDIS_HOST=queue
       - REDIS_PORT=6379
       - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - BUFFER_SIZE=${BUFFER_SIZE}
+      - STALE_BUFFER_TIMEOUT_MS=${STALE_BUFFER_TIMEOUT_MS}
       - NODE_ENV=development
   request_processor:
     build: ./request_processor
@@ -35,6 +37,12 @@ services:
       - REDIS_HOST=queue
       - REDIS_PORT=6379
       - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - JOB_RETRIES=${JOB_RETRIES}
+      - JOB_RETRY_DELAY=${JOB_RETRY_DELAY}
+      - PACKAGE_ADDRESS=${PACKAGE_ADDRESS}
+      - ADMIN_SECRET_KEY=${ADMIN_SECRET_KEY}
+      - ADMIN_CAP=${ADMIN_CAP}
+      - ADMIN_ADDRESS=${ADMIN_ADDRESS}
       - NODE_ENV=development
     deploy:
       mode: replicated
