@@ -6,8 +6,17 @@ import { prepareTransaction} from "./prepareTransaction";
 import { ParallelTransactionExecutor } from "@mysten/sui/transactions";
 import { QueueObject } from "../../request_handler/queue";
 
-
-const suiClient = new SuiClient({url: getFullnodeUrl('testnet')});
+type SuiNetwork = 'mainnet' | 'testnet' | 'devnet';
+const parseNetwork = (network: string | undefined): SuiNetwork => {
+  if (network === 'mainnet' || network === 'testnet' || network === 'devnet') {
+    return network;
+  } else {
+    return 'testnet';
+  }
+}
+const suiClient = new SuiClient({url: getFullnodeUrl(
+  parseNetwork(process.env.SUI_NETWORK)
+)});
 
 let adminPrivateKeyArray = Uint8Array.from(
     Array.from(fromB64(ADMIN_SECRET_KEY))
@@ -21,11 +30,11 @@ const executor = new ParallelTransactionExecutor({
   client: suiClient,
   signer: adminKeypair,
   coinBatchSize: 20,
-  initialCoinBalance: 5_000_000_000n,
-  minimumCoinBalance: 500_000_000n,
+  initialCoinBalance: BigInt(process.env.PTE_INITIAL_COIN_BALANCE ?? 5_000_000_000),
+  minimumCoinBalance: BigInt(process.env.PTE_MINIMUM_COIN_BALANE ?? 500_000_000),
   // The maximum number of gas coins to keep in the gas pool,
   // which also limits the maximum number of concurrent transactions
-  maxPoolSize: 10,
+  maxPoolSize: parseInt(process.env.PTE_MAX_POOL_SIZE ?? '10'),
 })
 
 export async function executeTransaction(receivers: QueueObject[]) {
