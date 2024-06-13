@@ -4,9 +4,8 @@ import { SuiClient, getFullnodeUrl } from "@mysten/sui/client";
 import { prepareTransaction} from "./prepareTransaction";
 import { ParallelTransactionExecutor } from "@mysten/sui/transactions";
 import { QueueObject } from "../../request_handler/queue";
-import { getEnvVariables } from "../utils/config";
+import { envVariables } from "../utils/config";
 
-const envVariables = getEnvVariables();
 type SuiNetwork = 'mainnet' | 'testnet' | 'devnet';
 const parseNetwork = (network: string | undefined): SuiNetwork => {
   if (network === 'mainnet' || network === 'testnet' || network === 'devnet') {

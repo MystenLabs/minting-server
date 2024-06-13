@@ -1,8 +1,6 @@
 import { QueueObject } from "../../request_handler/queue";
 import { Transaction } from "@mysten/sui/transactions";
-import { getEnvVariables } from "../utils/config.ts";
-
-const envVariables = getEnvVariables();
+import { envVariables } from "../utils/config.ts";
 
 export async function prepareTransaction(jobData: QueueObject[]) {
     const tx = new Transaction();

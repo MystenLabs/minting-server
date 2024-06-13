@@ -4,7 +4,7 @@ import * as Bun from "bun";
 
 config({});
 
-export function getEnvVariables() {
+function getEnvVariables() {
   const requiredEnvVars = {
     PACKAGE_ADDRESS: process.env.PACKAGE_ADDRESS,
     ADMIN_SECRET_KEY: process.env.ADMIN_SECRET_KEY,
@@ -24,6 +24,8 @@ export function getEnvVariables() {
 
   return requiredEnvVars;
 }
+
+export const envVariables = getEnvVariables();
 
 export type SmartContractSetup = {
   name: string;
