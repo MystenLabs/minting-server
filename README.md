@@ -29,7 +29,8 @@ This will generate a network of the containers:
 - `request_handler`: The web server (producer) that accepts requests (jobs) and saves them to the `queue` service.
 You can access a [dashboard](https://github.com/felixmosh/bull-board) to monitor all the jobs on `localhost:3000`.
 - `queue`: A redis database that contains the queue of the requests (jobs) to be processed.
-- `request_processor`: A worker that processes (consumes) the requests that have been queued up.
+- `request_processor`: A worker that processes (consumes) the requests that have been queued up. Each processor is configured to invoke a specific 
+Move function in a predefined package.
 - `notifier`: A websocket server that exposes (publishes) the results of the jobs to clients.
 You can open a websocket connection in your terminal with `websocat ws://localhost:3001`.
 - `structurizr`: This is a service enables you to explore the C4 diagram of our implementation with an interactive UI on `localhost:8080`.

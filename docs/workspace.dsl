@@ -8,7 +8,7 @@ workspace {
      
                 requestHandler = container "Request Handler API" "Checks the eligibility of the request. e.g. only one mint per client" "express.js"
                 requestProducer = container "Request Producer" "Creates new requests and adds then in the Queue"
-                requestConsumer = container "Request Consumer" "Consumes requests from the queue and executes them"
+                requestConsumer = container "Request Consumer" "Consumes requests from the queue and executes them. Each consumer handles invocation of 1 Move Function"
             
 
             database = container "Database" "Contains request queues to be processed by workers and keeps track of the request states." "Redis" {
@@ -31,7 +31,7 @@ workspace {
         requestHandler -> requestProducer "Submits request for processing"
         requestProducer -> database "Checks eligibility of request based on business rules and adds request to the queue"
         database -> requestConsumer "Pulls requests from"
-        requestConsumer -> sui "Makes transaction calls to"
+        requestConsumer -> sui "Makes transaction calls to specific Move function"
         database -> requestMonitor "Monitor pulls request data and logs"
 
         requestConsumer -> notifier "Sends transaction results to"
