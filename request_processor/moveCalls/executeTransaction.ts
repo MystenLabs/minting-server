@@ -1,11 +1,12 @@
 import { fromB64 } from "@mysten/sui/utils";
 import { Ed25519Keypair } from "@mysten/sui/keypairs/ed25519";
 import { SuiClient, getFullnodeUrl } from "@mysten/sui/client";
-import { ADMIN_SECRET_KEY } from "../utils/config";
 import { prepareTransaction} from "./prepareTransaction";
 import { ParallelTransactionExecutor } from "@mysten/sui/transactions";
 import { QueueObject } from "../../request_handler/queue";
+import { getEnvVariables } from "../utils/config";
 
+const envVariables = getEnvVariables();
 type SuiNetwork = 'mainnet' | 'testnet' | 'devnet';
 const parseNetwork = (network: string | undefined): SuiNetwork => {
   if (network === 'mainnet' || network === 'testnet' || network === 'devnet') {
@@ -19,7 +20,7 @@ const suiClient = new SuiClient({url: getFullnodeUrl(
 )});
 
 let adminPrivateKeyArray = Uint8Array.from(
-    Array.from(fromB64(ADMIN_SECRET_KEY))
+    Array.from(fromB64(envVariables.ADMIN_SECRET_KEY!))
 );
 
 const adminKeypair = Ed25519Keypair.fromSecretKey(

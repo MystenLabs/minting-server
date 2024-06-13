@@ -1,7 +1,8 @@
 import { QueueObject } from "../../request_handler/queue";
-import { PACKAGE_ADDRESS, ADMIN_CAP } from "../utils/config";
-
 import { Transaction } from "@mysten/sui/transactions";
+import { getEnvVariables } from "../utils/config.ts";
+
+const envVariables = getEnvVariables();
 
 export async function prepareTransaction(jobData: QueueObject[]) {
     const tx = new Transaction();
@@ -19,9 +20,9 @@ const addMoveCall = async (
 ) => {
 
     let nft = tx.moveCall({
-        target: `${PACKAGE_ADDRESS}::contract_example::mint_nft`,
+        target: `${envVariables.PACKAGE_ADDRESS!}::contract_example::mint_nft`,
         arguments: [
-            tx.object(ADMIN_CAP)
+            tx.object(envVariables.ADMIN_CAP!)
         ],
     });
 

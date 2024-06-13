@@ -1,0 +1,5 @@
+name: "contract_example"
+functions:
+  - mint_nft:
+    arguments:
+      - type: "address"
