@@ -7,3 +7,4 @@ node_modules
 build/
 Move.lock
 .publish.res.json
+summary.html
