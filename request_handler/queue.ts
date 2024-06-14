@@ -9,7 +9,7 @@ const redisConfig = {
 
 export type QueueObject = {
   smart_contract_function_name: string;
-  smart_contract_arguments: string[];
+  smart_contract_function_arguments: string[];
 };
 
 export const requestsQueue = new Queue("requests-queue", {

@@ -25,7 +25,7 @@ const addMoveCall = async (queueObject: QueueObject, tx: Transaction) => {
 
   const invalidMoveCall = !availableFunctionsInContract.includes(queueObject.smart_contract_function_name);
   if (invalidMoveCall) {
-    throw new Error(`Function ${queueObject.smart_contract_arguments} not present in the smart contract. Available functions: ${availableFunctionsInContract}`);
+    throw new Error(`Function ${queueObject.smart_contract_function_arguments} not present in the smart contract. Available functions: ${availableFunctionsInContract}`);
   }
 
   const functionArgumentsTypes = smartContractFunctionConfig
@@ -41,7 +41,7 @@ const addMoveCall = async (queueObject: QueueObject, tx: Transaction) => {
   } else {
     nft = tx.moveCall({
       target: `${envVariables.PACKAGE_ADDRESS!}::contract_example::${queueObject.smart_contract_function_name}`,
-      arguments: queueObject.smart_contract_arguments.map(
+      arguments: queueObject.smart_contract_function_arguments.map(
         (argument, i) => {
           switch (functionArgumentsTypes[0][i]) {
             case "object": {
