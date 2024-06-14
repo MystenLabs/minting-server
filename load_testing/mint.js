@@ -1,11 +1,18 @@
 import http from "k6/http";
+import { Trend } from "k6/metrics";
 import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js";
+
+const responseTimeTrend = new Trend('response_time');
 
 export const options = {
   iterations: 2000,
 };
 
 export function handleSummary(data) {
+  // metrics to add: average response time, median response time, requests per second, 
+  // the number of active sessions in the system, gas cost
+  
+  console.log(`Average response time: ${data.metrics['response_time'].values['p(95)']} ms`);
   return {
     "summary.html": htmlReport(data),
   };
@@ -24,5 +31,6 @@ export default function () {
     },
   };
 
-  http.post(url, payload, params);
+  const response = http.post(url, payload, params);
+  responseTimeTrend.add(response.timings.duration);
 }
