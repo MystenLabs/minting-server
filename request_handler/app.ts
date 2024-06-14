@@ -35,7 +35,8 @@ async function enqueueBatchBuffer(req: express.Request) {
     );
     batchBuffer.push({
       smart_contract_function_name: req.body.smart_contract_function_name,
-      smart_contract_function_arguments: req.body.smart_contract_arguments,
+      smart_contract_function_arguments: req.body.smart_contract_function_arguments,
+      receiver_address: req.body.receiver_address,
     } as QueueObject);
     if (!staleBufferIntervalRunning) {
       staleBufferIntervalRunning = true;
