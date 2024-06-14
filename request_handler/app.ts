@@ -20,8 +20,10 @@ app.use(express.json());
 app.post(
   "/",
   body("smart_contract_function_name").trim().notEmpty(),
-  body("smart_contract_function_arguments").isArray({min: 1}),
-  body("smart_contract_address").if(body("smart_contract_address").exists()).isString(),
+  body("smart_contract_function_arguments").isArray({ min: 1 }),
+  body("smart_contract_address")
+    .if(body("smart_contract_address").exists())
+    .isString(),
   async (req: express.Request, res: express.Response) => {
     // First check if there have been any errors on validation.
     const errors = validationResult(req);
