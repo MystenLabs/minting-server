@@ -37,7 +37,7 @@ async function enqueueBatchBuffer(req: express.Request) {
       id: generatePID(),
       requestorAddress: req.body.address,
       type: req.body.type,
-    });
+    } as QueueObject);
     if (!staleBufferIntervalRunning) {
       staleBufferIntervalRunning = true;
       setTimeout(async () => {
@@ -58,8 +58,9 @@ async function enqueueBatchBuffer(req: express.Request) {
 app.use(express.json());
 app.post(
   "/",
-  body("address").trim().notEmpty(),
-  body("type").trim().notEmpty(), // TODO: define the valid types and add check using custom validation rule.
+  // TODO: redefine the validation rules
+  // body("smart_contract_name").trim().notEmpty(),
+  // body("function_call").trim().notEmpty(),
   async (req: express.Request, res: express.Response) => {
     // First check if there have been any errors on validation.
     const errors = validationResult(req);

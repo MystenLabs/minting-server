@@ -1,7 +1,7 @@
 import { fromB64 } from "@mysten/sui/utils";
 import { Ed25519Keypair } from "@mysten/sui/keypairs/ed25519";
 import { SuiClient, getFullnodeUrl } from "@mysten/sui/client";
-import { prepareTransaction} from "./prepareTransaction";
+import { aggregateMoveCallsIntoATransaction} from "./prepareTransaction";
 import { ParallelTransactionExecutor } from "@mysten/sui/transactions";
 import { QueueObject } from "../../request_handler/queue";
 import { envVariables } from "../utils/config";
@@ -38,7 +38,7 @@ const executor = new ParallelTransactionExecutor({
 })
 
 export async function executeTransaction(receivers: QueueObject[]) {
-    const transaction = await prepareTransaction(receivers)
+    const transaction = await aggregateMoveCallsIntoATransaction(receivers)
     const res = await executor.executeTransaction(transaction)
 
     return {status: res.effects, digest: res.digest};

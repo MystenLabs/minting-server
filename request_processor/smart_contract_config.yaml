@@ -1,5 +1,5 @@
-name: "contract_example"
-functions:
-  - mint_nft:
-    arguments:
-      - type: "address"
+smart_contract_functions:
+  - name: "mint_nft"
+    types_of_arguments: ["object"]
+  - name: "modify_nft"
+    types_of_arguments: ["object"]

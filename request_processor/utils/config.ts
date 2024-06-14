@@ -27,18 +27,11 @@ function getEnvVariables() {
 
 export const envVariables = getEnvVariables();
 
-export type SmartContractSetup = {
-  name: string;
-  functions: [SmartContractFunction];
-};
-
-type SmartContractFunction = {
-  name: string;
-  arguments: SmartContractFunctionArgument[];
-};
-
-type SmartContractFunctionArgument = {
-  type: string;
+export type SmartContractFunctionConfig = {
+  smart_contract_functions: {
+    name: string;
+    argument_types: [string]
+    }[];
 };
 
 /*
@@ -48,10 +41,11 @@ It contains information about the smart contract functions that are going to be 
 the sui typescript sdk. This enables our service to know which functions are available to be called through the handler's API
 and what arguments they expect.
 */
-export async function getSmartContractFunctionsConfig(): Promise<SmartContractSetup> {
+async function getSmartContractFunctionsConfig(): Promise<SmartContractFunctionConfig> {
   const yaml_contents: string = await Bun.file(
-    "smart_contract_config.yaml",
+    "./smart_contract_config.yaml",
   ).text();
-  const contractSetup = YAML.parse(yaml_contents) as SmartContractSetup;
-  return contractSetup;
+  const contractSetup = YAML.parse(yaml_contents);
+  return contractSetup as SmartContractFunctionConfig;
 }
+export const smartContractFunctionConfig: SmartContractFunctionConfig = await getSmartContractFunctionsConfig();
