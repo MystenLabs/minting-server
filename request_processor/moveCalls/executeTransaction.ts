@@ -31,7 +31,7 @@ const executor = new ParallelTransactionExecutor({
   signer: adminKeypair,
   coinBatchSize: 20,
   initialCoinBalance: BigInt(process.env.PTE_INITIAL_COIN_BALANCE ?? 5_000_000_000),
-  minimumCoinBalance: BigInt(process.env.PTE_MINIMUM_COIN_BALANE ?? 500_000_000),
+  minimumCoinBalance: BigInt(process.env.PTE_MINIMUM_COIN_BALANCE ?? 500_000_000),
   // The maximum number of gas coins to keep in the gas pool,
   // which also limits the maximum number of concurrent transactions
   maxPoolSize: parseInt(process.env.PTE_MAX_POOL_SIZE ?? '10'),
