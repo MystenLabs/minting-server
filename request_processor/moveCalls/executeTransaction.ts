@@ -29,7 +29,7 @@ const adminKeypair = Ed25519Keypair.fromSecretKey(
 const executor = new ParallelTransactionExecutor({
   client: suiClient,
   signer: adminKeypair,
-  coinBatchSize: 20,
+  coinBatchSize: parseInt(process.env.PTE_COIN_BATCH_SIZE ?? '20'),
   initialCoinBalance: BigInt(process.env.PTE_INITIAL_COIN_BALANCE ?? 5_000_000_000),
   minimumCoinBalance: BigInt(process.env.PTE_MINIMUM_COIN_BALANCE ?? 500_000_000),
   // The maximum number of gas coins to keep in the gas pool,
