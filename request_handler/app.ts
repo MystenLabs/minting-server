@@ -34,9 +34,8 @@ async function enqueueBatchBuffer(req: express.Request) {
       `Adding request to buffer... ${batchBuffer.length}/${maxBatchSize}`,
     );
     batchBuffer.push({
-      id: generatePID(),
-      requestorAddress: req.body.address,
-      type: req.body.type,
+      smart_contract_function_name: req.body.smart_contract_function_name,
+      smart_contract_arguments: req.body.smart_contract_arguments,
     } as QueueObject);
     if (!staleBufferIntervalRunning) {
       staleBufferIntervalRunning = true;
@@ -59,8 +58,8 @@ app.use(express.json());
 app.post(
   "/",
   // TODO: redefine the validation rules
-  // body("smart_contract_name").trim().notEmpty(),
-  // body("function_call").trim().notEmpty(),
+  // body("smart_contract_function_name").trim().notEmpty(),
+  // body("smart_contract_arguments").trim().notEmpty(),
   async (req: express.Request, res: express.Response) => {
     // First check if there have been any errors on validation.
     const errors = validationResult(req);
