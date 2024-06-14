@@ -33,13 +33,13 @@ const addMoveCall = async (queueObject: QueueObject, tx: Transaction) => {
     .filter(f => f.name == queueObject.smart_contract_function_name)
     .map(f => f.types_of_arguments)
 
-  let nft;
+  let suiObject;
   if (functionArgumentsTypes.length == 0) {
-    nft = tx.moveCall({
+    suiObject = tx.moveCall({
       target: `${envVariables.PACKAGE_ADDRESS!}::contract_example::${queueObject.smart_contract_function_name}`,
     });
   } else {
-    nft = tx.moveCall({
+    suiObject = tx.moveCall({
       target: `${envVariables.PACKAGE_ADDRESS!}::contract_example::${queueObject.smart_contract_function_name}`,
       arguments: queueObject.smart_contract_function_arguments.map(
         (argument, i) => {
@@ -56,8 +56,9 @@ const addMoveCall = async (queueObject: QueueObject, tx: Transaction) => {
     });
   }
 
-  // TODO - remove this line or move it to the contract code
-  tx.transferObjects([nft], tx.pure.address("0xe40c8cf8b53822829b3a6dc9aea84b62653f60b771e9da4bd4e214cae851b87b"));
+  if (suiObject && queueObject.receiver_address) {
+    tx.transferObjects([suiObject], tx.pure.address(queueObject.receiver_address));
+  }
 
   return tx;
 };
