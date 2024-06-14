@@ -36,11 +36,11 @@ const addMoveCall = async (queueObject: QueueObject, tx: Transaction) => {
   let suiObject;
   if (functionArgumentsTypes.length == 0) {
     suiObject = tx.moveCall({
-      target: `${envVariables.PACKAGE_ADDRESS!}::contract_example::${queueObject.smart_contract_function_name}`,
+      target: `${envVariables.PACKAGE_ADDRESS!}::${envVariables.SMART_CONTRACT_NAME}::${queueObject.smart_contract_function_name}`,
     });
   } else {
     suiObject = tx.moveCall({
-      target: `${envVariables.PACKAGE_ADDRESS!}::contract_example::${queueObject.smart_contract_function_name}`,
+      target: `${envVariables.PACKAGE_ADDRESS!}::${envVariables.SMART_CONTRACT_NAME}::${queueObject.smart_contract_function_name}`,
       arguments: queueObject.smart_contract_function_arguments.map(
         (argument, i) => {
           switch (functionArgumentsTypes[0][i]) {
