@@ -1,6 +1,6 @@
 import express from "express";
 import { requestsQueue } from "./queue";
-import { body, validationResult } from "express-validator";
+import { body, check, validationResult } from "express-validator";
 import { createBullBoard } from "@bull-board/api";
 import { BullMQAdapter } from "@bull-board/api/bullMQAdapter";
 import { ExpressAdapter } from "@bull-board/express";
@@ -19,11 +19,9 @@ app.use("/", serverAdapter.getRouter());
 app.use(express.json());
 app.post(
   "/",
-  body("smart_contract_function_name").trim().notEmpty(),
-  body("smart_contract_function_arguments").isArray({ min: 1 }),
-  body("smart_contract_address")
-    .if(body("smart_contract_address").exists())
-    .isString(),
+  check("smart_contract_function_name").trim().notEmpty(),
+  check("smart_contract_function_arguments").isArray(),
+  check("receiver_address").optional().isString(),
   async (req: express.Request, res: express.Response) => {
     // First check if there have been any errors on validation.
     const errors = validationResult(req);
