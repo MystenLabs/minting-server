@@ -11,6 +11,7 @@ const parseNetwork = (network: string | undefined): SuiNetwork => {
   if (network === 'mainnet' || network === 'testnet' || network === 'devnet') {
     return network;
   } else {
+    console.warn(`Invalid network: ${network}, defaulting to testnet`);
     return 'testnet';
   }
 }
