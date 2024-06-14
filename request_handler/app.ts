@@ -1,15 +1,12 @@
 import express from "express";
-import { QueueObject, enqueRequest, requestsQueue } from "./queue";
+import { requestsQueue } from "./queue";
 import { body, validationResult } from "express-validator";
 import { createBullBoard } from "@bull-board/api";
 import { BullMQAdapter } from "@bull-board/api/bullMQAdapter";
 import { ExpressAdapter } from "@bull-board/express";
+import { enqueueToBatchBuffer } from "./buffer";
 
 export const app = express();
-const maxBatchSize = parseInt(process.env.BUFFER_SIZE ?? "10");
-const staleBufferTimeout = parseInt(process.env.STALE_BUFFER_TIMEOUT_MS ?? "10000");
-let staleBufferIntervalRunning = false;
-let batchBuffer = new Array<QueueObject>();
 
 // Connect BullMQ UI board to monitor the jobs in a nice UI
 const serverAdapter = new ExpressAdapter();
@@ -19,41 +16,6 @@ createBullBoard({
   serverAdapter: serverAdapter,
 });
 app.use("/", serverAdapter.getRouter());
-
-async function enqueueBatchBuffer(req: express.Request) {
-  const bufferIsFull = batchBuffer.length >= maxBatchSize;
-  if (bufferIsFull) {
-    console.log(
-      `Buffer is full (${batchBuffer.length}/${maxBatchSize}), sending batch to queue...`,
-    );
-    await enqueRequest(batchBuffer);
-    batchBuffer = []; // Empty buffer
-  } else {
-    console.log(
-      `Adding request to buffer... ${batchBuffer.length}/${maxBatchSize}`,
-    );
-    batchBuffer.push({
-      smart_contract_function_name: req.body.smart_contract_function_name,
-      smart_contract_function_arguments: req.body.smart_contract_function_arguments,
-      receiver_address: req.body.receiver_address,
-    } as QueueObject);
-    if (!staleBufferIntervalRunning) {
-      staleBufferIntervalRunning = true;
-      setTimeout(async () => {
-        staleBufferIntervalRunning = false;
-        if (batchBuffer.length > 0) {
-          console.log(
-            `Stale buffer detected (size ${batchBuffer.length}/${maxBatchSize}). Sending batch to queue...`,
-          );
-          await enqueRequest(batchBuffer);
-          batchBuffer = []; // Empty buffer
-        }
-      }, staleBufferTimeout);
-    }
-
-  }
-}
-
 app.use(express.json());
 app.post(
   "/",
@@ -68,7 +30,7 @@ app.post(
     }
     // Proceed to push the request to the queue.
     try {
-      await enqueueBatchBuffer(req);
+      await enqueueToBatchBuffer(req);
       return res.status(202).send(`Accepted: Request was successfully queued.`);
     } catch (error) {
       return res.status(500).send("Failed to interact with queuing service.");
