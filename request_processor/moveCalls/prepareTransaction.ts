@@ -17,7 +17,7 @@ export async function aggregateMoveCallsIntoATransaction(
 }
 
 /*
-Adds a move call to the transaction.
+Adds a move call based on the received queue object (inside a worker job) to the transaction object.
 */
 const addMoveCall = async (queueObject: QueueObject, tx: Transaction) => {
   const availableFunctionsInContract =
@@ -34,13 +34,16 @@ const addMoveCall = async (queueObject: QueueObject, tx: Transaction) => {
     .map(f => f.types_of_arguments)
 
   let suiObject;
-  if (functionArgumentsTypes.length == 0) {
+  const noFunctionArgumentsDeclaredinContract = functionArgumentsTypes.length == 0;
+  if (noFunctionArgumentsDeclaredinContract) {
     suiObject = tx.moveCall({
       target: `${envVariables.PACKAGE_ADDRESS!}::${envVariables.SMART_CONTRACT_NAME}::${queueObject.smart_contract_function_name}`,
     });
   } else {
     suiObject = tx.moveCall({
       target: `${envVariables.PACKAGE_ADDRESS!}::${envVariables.SMART_CONTRACT_NAME}::${queueObject.smart_contract_function_name}`,
+
+      // Depending on the smart contract configuration, map the arguments to the correct object type.
       arguments: queueObject.smart_contract_function_arguments.map(
         (argument, i) => {
           switch (functionArgumentsTypes[0][i]) {
@@ -56,6 +59,7 @@ const addMoveCall = async (queueObject: QueueObject, tx: Transaction) => {
     });
   }
 
+  // Transfer the sui object to the receiver address if it is present.
   if (suiObject && queueObject.receiver_address) {
     tx.transferObjects([suiObject], tx.pure.address(queueObject.receiver_address));
   }
