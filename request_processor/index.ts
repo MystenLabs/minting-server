@@ -23,7 +23,7 @@ const worker = new Worker(
         throw new Error(`Transaction failed: ${resp.status}`);
       }
       job.updateProgress(100);
-      return { jobId: job.id, result: resp.status, digest: resp.digest };
+      return { jobId: job.id, digest: resp.digest };
     } catch (e) {
       console.error(`Error executing bulk of transactions: ${job.data} - `, e);
       throw e;
