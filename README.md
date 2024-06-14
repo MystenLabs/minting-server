@@ -34,15 +34,31 @@ You can access a [dashboard](https://github.com/felixmosh/bull-board) to monitor
 You can open a websocket connection in your terminal with `websocat ws://localhost:3001`.
 - `structurizr`: This is a service enables you to explore the C4 diagram of our implementation with an interactive UI on `localhost:8080`.
 
-Try it out:
+It is also necessary to create a `request_processor/smart_contract_config.yaml` where for each function
+of the smart contract you must provide the function name the function arguments types.
+
+e.g. assuming the smart contract has a function `mint_nft` that takes an `object` as an argument and a
+`modify_nft` function that takes a `pure` type argument and an `object` type argument, the configuration file would look like this:
+
+```yaml
+smart_contract_functions:
+  - name: "mint_nft"  #
+    types_of_arguments: ["object"]
+  - name: "modify_nft"  #
+    types_of_arguments: ["pure", "object"]
 ```
+
+So if you want to test the system (calling the `mint_nft`),
+you can send a POST request to the `request_handler` service with the following curl command:
+```bash
 curl --request POST \
   --url 'http://localhost:3000/?=' \
   --header 'Content-Type: application/json' \
   --header 'User-Agent: insomnia/9.2.0' \
   --data '{
-	"address": "0xe40c8cf8b53822829b3a6dc9aea84b62653f60b771e9da4bd4e214cae851b87b",
-	"type": "mint"
+	"smart_contract_function_name": "mint_nft",
+	"smart_contract_function_arguments": ["0x9320eaaf945570b1baf7607f98a9cf5585fdcb8ed09d46da93199fee16b48196"],
+	"receiver_address": "0xe40c8cf8b53822829b3a6dc9aea84b62653f60b771e9da4bd4e214cae851b87b"
 }'
 ```
 
