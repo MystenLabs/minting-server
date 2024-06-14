@@ -19,9 +19,9 @@ app.use("/", serverAdapter.getRouter());
 app.use(express.json());
 app.post(
   "/",
-  check("smart_contract_function_name").trim().notEmpty(),
-  check("smart_contract_function_arguments").isArray(),
-  check("receiver_address").optional().isString(),
+  check("smartContractFunctionName").trim().notEmpty(),
+  check("smartContractFunctionArguments").isArray(),
+  check("receiverAddress").optional().isString(),
   async (req: express.Request, res: express.Response) => {
     // First check if there have been any errors on validation.
     const errors = validationResult(req);

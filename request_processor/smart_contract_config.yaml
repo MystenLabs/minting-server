@@ -1,5 +1,5 @@
 # This is an examle of a smart contract configuration file
 # based on the move/example_contract of the project's root dir.
-smart_contract_functions:
+smartContractFunctions:
   - name: "mint_nft"
-    types_of_arguments: ["object"]
+    typesOfArguments: ["object"]

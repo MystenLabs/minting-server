@@ -29,9 +29,9 @@ function getEnvVariables() {
 export const envVariables = getEnvVariables();
 
 export type SmartContractFunctionConfig = {
-  smart_contract_functions: {
+  smartContractFunctions: {
     name: string;
-    types_of_arguments: [string]
+    typesOfArguments: [string]
     }[];
 };
 

@@ -21,30 +21,30 @@ Adds a move call based on the received queue object (inside a worker job) to the
 */
 const addMoveCall = async (queueObject: QueueObject, tx: Transaction) => {
   const availableFunctionsInContract =
-    smartContractFunctionConfig.smart_contract_functions.map((x) => x.name);
+    smartContractFunctionConfig.smartContractFunctions.map((x) => x.name);
 
-  const invalidMoveCall = !availableFunctionsInContract.includes(queueObject.smart_contract_function_name);
+  const invalidMoveCall = !availableFunctionsInContract.includes(queueObject.smartContractFunctionName);
   if (invalidMoveCall) {
-    throw new Error(`Function ${queueObject.smart_contract_function_arguments} not present in the smart contract. Available functions: ${availableFunctionsInContract}`);
+    throw new Error(`Function ${queueObject.smartContractFunctionArguments} not present in the smart contract. Available functions: ${availableFunctionsInContract}`);
   }
 
   const functionArgumentsTypes = smartContractFunctionConfig
-    .smart_contract_functions
-    .filter(f => f.name == queueObject.smart_contract_function_name)
-    .map(f => f.types_of_arguments)
+    .smartContractFunctions
+    .filter(f => f.name == queueObject.smartContractFunctionName)
+    .map(f => f.typesOfArguments)
 
   let suiObject;
   const noFunctionArgumentsDeclaredinContract = functionArgumentsTypes.length == 0;
   if (noFunctionArgumentsDeclaredinContract) {
     suiObject = tx.moveCall({
-      target: `${envVariables.PACKAGE_ADDRESS!}::${envVariables.SMART_CONTRACT_NAME}::${queueObject.smart_contract_function_name}`,
+      target: `${envVariables.PACKAGE_ADDRESS!}::${envVariables.SMART_CONTRACT_NAME}::${queueObject.smartContractFunctionName}`,
     });
   } else {
     suiObject = tx.moveCall({
-      target: `${envVariables.PACKAGE_ADDRESS!}::${envVariables.SMART_CONTRACT_NAME}::${queueObject.smart_contract_function_name}`,
+      target: `${envVariables.PACKAGE_ADDRESS!}::${envVariables.SMART_CONTRACT_NAME}::${queueObject.smartContractFunctionName}`,
 
       // Depending on the smart contract configuration, map the arguments to the correct object type.
-      arguments: queueObject.smart_contract_function_arguments.map(
+      arguments: queueObject.smartContractFunctionArguments.map(
         (argument, i) => {
           switch (functionArgumentsTypes[0][i]) {
             case "object": {
@@ -60,8 +60,8 @@ const addMoveCall = async (queueObject: QueueObject, tx: Transaction) => {
   }
 
   // Transfer the sui object to the receiver address if it is present.
-  if (suiObject && queueObject.receiver_address) {
-    tx.transferObjects([suiObject], tx.pure.address(queueObject.receiver_address));
+  if (suiObject && queueObject.receiverAddress) {
+    tx.transferObjects([suiObject], tx.pure.address(queueObject.receiverAddress));
   }
 
   return tx;

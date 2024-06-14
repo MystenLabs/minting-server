@@ -24,9 +24,9 @@ export async function enqueueToBatchBuffer(req: express.Request) {
       `Adding request to buffer... ${batchBuffer.length}/${maxBatchSize}`,
     );
     batchBuffer.push({
-      smart_contract_function_name: req.body.smart_contract_function_name,
-      smart_contract_function_arguments: req.body.smart_contract_function_arguments,
-      receiver_address: req.body.receiver_address,
+      smartContractFunctionName: req.body.smartContractFunctionName,
+      smartContractFunctionArguments: req.body.smartContractFunctionArguments,
+      receiverAddress: req.body.receiverAddress,
     } as QueueObject);
     if (!staleBufferIntervalRunning) {
       staleBufferIntervalRunning = true;
