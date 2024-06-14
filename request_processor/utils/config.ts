@@ -7,7 +7,7 @@ config({});
 function getEnvVariables() {
   const requiredEnvVars = {
     PACKAGE_ADDRESS: process.env.PACKAGE_ADDRESS,
-    SMART_CONTRACT_NAME: process.env.SMART_CONTRACT_NAME,
+    MODULE_NAME: process.env.MODULE_NAME,
     ADMIN_SECRET_KEY: process.env.ADMIN_SECRET_KEY,
     ADMIN_CAP: process.env.ADMIN_CAP,
     ADMIN_ADDRESS: process.env.ADMIN_ADDRESS,

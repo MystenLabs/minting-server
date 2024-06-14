@@ -37,11 +37,11 @@ const addMoveCall = async (queueObject: QueueObject, tx: Transaction) => {
   const noFunctionArgumentsDeclaredinContract = functionArgumentsTypes.length == 0;
   if (noFunctionArgumentsDeclaredinContract) {
     suiObject = tx.moveCall({
-      target: `${envVariables.PACKAGE_ADDRESS!}::${envVariables.SMART_CONTRACT_NAME}::${queueObject.smartContractFunctionName}`,
+      target: `${envVariables.PACKAGE_ADDRESS!}::${envVariables.MODULE_NAME}::${queueObject.smartContractFunctionName}`,
     });
   } else {
     suiObject = tx.moveCall({
-      target: `${envVariables.PACKAGE_ADDRESS!}::${envVariables.SMART_CONTRACT_NAME}::${queueObject.smartContractFunctionName}`,
+      target: `${envVariables.PACKAGE_ADDRESS!}::${envVariables.MODULE_NAME}::${queueObject.smartContractFunctionName}`,
 
       // Depending on the smart contract configuration, map the arguments to the correct object type.
       arguments: queueObject.smartContractFunctionArguments.map(
