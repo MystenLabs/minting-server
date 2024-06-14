@@ -1,6 +1,5 @@
 import express from "express";
 import { QueueObject, enqueRequest, requestsQueue } from "./queue";
-import { generatePID } from "./utils/pid";
 import { body, validationResult } from "express-validator";
 import { createBullBoard } from "@bull-board/api";
 import { BullMQAdapter } from "@bull-board/api/bullMQAdapter";
