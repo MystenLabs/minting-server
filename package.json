@@ -2,5 +2,9 @@
   "dependencies": {},
   "devDependencies": {
     "prettier": "3.3.2"
+  },
+  "scripts": {
+    "fix-format": "bun prettier . --write",
+    "check-format": "bun prettier . --check"
   }
 }
