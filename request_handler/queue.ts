@@ -28,6 +28,6 @@ export async function enqueRequest(queueObjects: Array<QueueObject>) {
         type: "exponential",
         delay: Number(process.env.JOB_BACKOFF_DELAY ?? 1000),
       },
-    }
+    },
   );
 }

@@ -1,8 +1,10 @@
-import {QueueObject, enqueRequest} from "./queue";
+import { QueueObject, enqueRequest } from "./queue";
 import express from "express";
 
 const maxBatchSize = parseInt(process.env.BUFFER_SIZE ?? "10");
-const staleBufferTimeout = parseInt(process.env.STALE_BUFFER_TIMEOUT_MS ?? "10000");
+const staleBufferTimeout = parseInt(
+  process.env.STALE_BUFFER_TIMEOUT_MS ?? "10000",
+);
 let staleBufferIntervalRunning = false;
 let batchBuffer = new Array<QueueObject>();
 

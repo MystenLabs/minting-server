@@ -16,7 +16,9 @@ const worker = new Worker(
   async (job) => {
     try {
       job.updateProgress(10);
-      console.log(`Executing transactions in bulk: ${JSON.stringify(job.data)}`);
+      console.log(
+        `Executing transactions in bulk: ${JSON.stringify(job.data)}`,
+      );
       const resp = await executeTransaction(job.data);
       job.updateProgress(90);
       if (resp.status === "failure") {
