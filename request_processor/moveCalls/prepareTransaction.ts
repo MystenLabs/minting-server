@@ -23,18 +23,23 @@ const addMoveCall = async (queueObject: QueueObject, tx: Transaction) => {
   const availableFunctionsInContract =
     smartContractFunctionConfig.smartContractFunctions.map((x) => x.name);
 
-  const invalidMoveCall = !availableFunctionsInContract.includes(queueObject.smartContractFunctionName);
+  const invalidMoveCall = !availableFunctionsInContract.includes(
+    queueObject.smartContractFunctionName,
+  );
   if (invalidMoveCall) {
-    throw new Error(`Function ${queueObject.smartContractFunctionArguments} not present in the smart contract. Available functions: ${availableFunctionsInContract}`);
+    throw new Error(
+      `Function ${queueObject.smartContractFunctionArguments} not present in the smart contract. Available functions: ${availableFunctionsInContract}`,
+    );
   }
 
-  const functionArgumentsTypes = smartContractFunctionConfig
-    .smartContractFunctions
-    .filter(f => f.name == queueObject.smartContractFunctionName)
-    .map(f => f.typesOfArguments)
+  const functionArgumentsTypes =
+    smartContractFunctionConfig.smartContractFunctions
+      .filter((f) => f.name == queueObject.smartContractFunctionName)
+      .map((f) => f.typesOfArguments);
 
   let suiObject;
-  const noFunctionArgumentsDeclaredinContract = functionArgumentsTypes.length == 0;
+  const noFunctionArgumentsDeclaredinContract =
+    functionArgumentsTypes.length == 0;
   if (noFunctionArgumentsDeclaredinContract) {
     suiObject = tx.moveCall({
       target: `${envVariables.PACKAGE_ADDRESS!}::${envVariables.MODULE_NAME}::${queueObject.smartContractFunctionName}`,
@@ -54,14 +59,17 @@ const addMoveCall = async (queueObject: QueueObject, tx: Transaction) => {
               return tx.pure(argument as any);
             }
           }
-        }
+        },
       ),
     });
   }
 
   // Transfer the sui object to the receiver address if it is present.
   if (suiObject && queueObject.receiverAddress) {
-    tx.transferObjects([suiObject], tx.pure.address(queueObject.receiverAddress));
+    tx.transferObjects(
+      [suiObject],
+      tx.pure.address(queueObject.receiverAddress),
+    );
   }
 
   return tx;

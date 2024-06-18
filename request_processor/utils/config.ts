@@ -31,8 +31,8 @@ export const envVariables = getEnvVariables();
 export type SmartContractFunctionConfig = {
   smartContractFunctions: {
     name: string;
-    typesOfArguments: [string]
-    }[];
+    typesOfArguments: [string];
+  }[];
 };
 
 /*
@@ -49,4 +49,5 @@ async function getSmartContractFunctionsConfig(): Promise<SmartContractFunctionC
   const contractSetup = YAML.parse(yaml_contents);
   return contractSetup as SmartContractFunctionConfig;
 }
-export const smartContractFunctionConfig: SmartContractFunctionConfig = await getSmartContractFunctionsConfig();
+export const smartContractFunctionConfig: SmartContractFunctionConfig =
+  await getSmartContractFunctionsConfig();

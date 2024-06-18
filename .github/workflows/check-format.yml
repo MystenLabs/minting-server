@@ -1,0 +1,21 @@
+name: Check Code Formatting
+
+on: [push, pull_request]
+
+jobs:
+  prettier-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 1.0.11
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Run Prettier check
+        run: bun run check-format
