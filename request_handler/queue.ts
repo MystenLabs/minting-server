@@ -8,9 +8,9 @@ const redisConfig = {
 };
 
 export type QueueObject = {
-  id: String;
-  requestorAddress: String;
-  type: String;
+  smartContractFunctionName: string;
+  smartContractFunctionArguments: string[];
+  receiverAddress?: string;
 };
 
 export const requestsQueue = new Queue("requests-queue", {

@@ -1,31 +1,68 @@
 import { QueueObject } from "../../request_handler/queue";
-import { PACKAGE_ADDRESS, ADMIN_CAP } from "../utils/config";
-
 import { Transaction } from "@mysten/sui/transactions";
+import { envVariables, smartContractFunctionConfig } from "../utils/config.ts";
 
-export async function prepareTransaction(jobData: QueueObject[]) {
-    const tx = new Transaction();
-    const receivers = jobData.map(data => data.requestorAddress)
-    for (const receiver of receivers) {
-        await addMoveCall(String(receiver), tx);
-    }
+/*
+Aggregate all the move calls included in the queue objects into a single transaction.
+*/
+export async function aggregateMoveCallsIntoATransaction(
+  queueObjects: QueueObject[],
+) {
+  const tx = new Transaction();
+  for (const queueObject of queueObjects) {
+    await addMoveCall(queueObject, tx);
+  }
 
-    return tx;
+  return tx;
 }
 
-const addMoveCall = async (
-    receiver: string,
-    tx: Transaction,
-) => {
+/*
+Adds a move call based on the received queue object (inside a worker job) to the transaction object.
+*/
+const addMoveCall = async (queueObject: QueueObject, tx: Transaction) => {
+  const availableFunctionsInContract =
+    smartContractFunctionConfig.smartContractFunctions.map((x) => x.name);
 
-    let nft = tx.moveCall({
-        target: `${PACKAGE_ADDRESS}::contract_example::mint_nft`,
-        arguments: [
-            tx.object(ADMIN_CAP)
-        ],
+  const invalidMoveCall = !availableFunctionsInContract.includes(queueObject.smartContractFunctionName);
+  if (invalidMoveCall) {
+    throw new Error(`Function ${queueObject.smartContractFunctionArguments} not present in the smart contract. Available functions: ${availableFunctionsInContract}`);
+  }
+
+  const functionArgumentsTypes = smartContractFunctionConfig
+    .smartContractFunctions
+    .filter(f => f.name == queueObject.smartContractFunctionName)
+    .map(f => f.typesOfArguments)
+
+  let suiObject;
+  const noFunctionArgumentsDeclaredinContract = functionArgumentsTypes.length == 0;
+  if (noFunctionArgumentsDeclaredinContract) {
+    suiObject = tx.moveCall({
+      target: `${envVariables.PACKAGE_ADDRESS!}::${envVariables.MODULE_NAME}::${queueObject.smartContractFunctionName}`,
     });
+  } else {
+    suiObject = tx.moveCall({
+      target: `${envVariables.PACKAGE_ADDRESS!}::${envVariables.MODULE_NAME}::${queueObject.smartContractFunctionName}`,
 
-    tx.transferObjects([nft], tx.pure.address(receiver));
+      // Depending on the smart contract configuration, map the arguments to the correct object type.
+      arguments: queueObject.smartContractFunctionArguments.map(
+        (argument, i) => {
+          switch (functionArgumentsTypes[0][i]) {
+            case "object": {
+              return tx.object(argument);
+            }
+            default: {
+              return tx.pure(argument as any);
+            }
+          }
+        }
+      ),
+    });
+  }
 
-    return tx;
-}
+  // Transfer the sui object to the receiver address if it is present.
+  if (suiObject && queueObject.receiverAddress) {
+    tx.transferObjects([suiObject], tx.pure.address(queueObject.receiverAddress));
+  }
+
+  return tx;
+};
