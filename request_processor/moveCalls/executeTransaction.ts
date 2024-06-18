@@ -46,5 +46,5 @@ export async function executeTransaction(receivers: QueueObject[]) {
   const transaction = await aggregateMoveCallsIntoATransaction(receivers);
   const res = await executor.executeTransaction(transaction);
 
-  return { status: res.effects, digest: res.digest };
+  return { effects: res.effects, digest: res.digest };
 }

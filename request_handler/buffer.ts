@@ -29,6 +29,7 @@ export async function enqueueToBatchBuffer(req: express.Request) {
       smartContractFunctionName: req.body.smartContractFunctionName,
       smartContractFunctionArguments: req.body.smartContractFunctionArguments,
       receiverAddress: req.body.receiverAddress,
+      timestamp: req.body.timestamp,
     } as QueueObject);
     if (!staleBufferIntervalRunning) {
       staleBufferIntervalRunning = true;

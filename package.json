@@ -1,5 +1,5 @@
 {
-  "dependencies": {},
+  "dependencies": { "ioredis": "^5.4.1" },
   "devDependencies": {
     "prettier": "3.3.2"
   },
