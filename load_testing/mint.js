@@ -9,8 +9,6 @@ export const options = {
 };
 
 export function handleSummary(data) {
-  // metrics to add: average response time, median response time, requests per second, 
-  // the number of active sessions in the system, gas cost
   
   console.log(`Average response time: ${data.metrics['response_time'].values['p(95)']} ms`);
   return {
@@ -24,7 +22,6 @@ export default function () {
     smartContractFunctionName: "mint_nft",
     smartContractFunctionArguments: ["0xc44fb22cb1786b4eae31ada831bb0fa2549612ea1dabec5231a792c9fa921f46"],
     receiverAddress: "0xe40c8cf8b53822829b3a6dc9aea84b62653f60b771e9da4bd4e214cae851b87b",
-    timestamp: Math.floor(new Date().getTime()),
   });
 
   const params = {

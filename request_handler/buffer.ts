@@ -13,7 +13,7 @@ Enqueues a batch of requests to the batch buffer.
 The batch buffer is a queue of requests that will be sent to the queue service when
 the buffer is full or when the buffer has been idle for a certain amount of time.
 */
-export async function enqueueToBatchBuffer(req: express.Request) {
+export async function enqueueToBatchBuffer(req: express.Request, timestamp: number) {
   const bufferIsFull = batchBuffer.length >= maxBatchSize;
   if (bufferIsFull) {
     console.log(
@@ -29,7 +29,7 @@ export async function enqueueToBatchBuffer(req: express.Request) {
       smartContractFunctionName: req.body.smartContractFunctionName,
       smartContractFunctionArguments: req.body.smartContractFunctionArguments,
       receiverAddress: req.body.receiverAddress,
-      timestamp: req.body.timestamp,
+      timestamp: timestamp,
     } as QueueObject);
     if (!staleBufferIntervalRunning) {
       staleBufferIntervalRunning = true;
