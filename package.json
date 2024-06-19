@@ -1,5 +1,9 @@
 {
-  "dependencies": { "ioredis": "^5.4.1" },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "ioredis": "^5.4.1",
+    "yaml": "^2.4.5"
+  },
   "devDependencies": {
     "prettier": "3.3.2"
   },
