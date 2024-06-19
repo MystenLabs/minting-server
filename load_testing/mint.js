@@ -10,7 +10,7 @@ export const options = {
 
 export function handleSummary(data) {
   console.log(
-    `Average response time: ${data.metrics["response_time"].values["p(95)"]} ms`
+    `Average response time: ${data.metrics["response_time"].values["p(95)"]} ms`,
   );
   return {
     "summary.html": htmlReport(data),
