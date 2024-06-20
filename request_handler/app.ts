@@ -24,13 +24,14 @@ app.post(
   check("receiverAddress").optional().isString(),
   async (req: express.Request, res: express.Response) => {
     // First check if there have been any errors on validation.
+    const timestamp = Math.floor(new Date().getTime());
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
     // Proceed to push the request to the queue.
     try {
-      await enqueueToBatchBuffer(req);
+      await enqueueToBatchBuffer(req, timestamp);
       return res.status(202).send(`Accepted: Request was successfully queued.`);
     } catch (error) {
       return res.status(500).send("Failed to interact with queuing service.");

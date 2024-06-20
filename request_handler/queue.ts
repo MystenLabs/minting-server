@@ -11,6 +11,7 @@ export type QueueObject = {
   smartContractFunctionName: string;
   smartContractFunctionArguments: string[];
   receiverAddress?: string;
+  timestamp: number;
 };
 
 export const requestsQueue = new Queue("requests-queue", {

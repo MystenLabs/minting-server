@@ -21,11 +21,15 @@ const worker = new Worker(
       );
       const resp = await executeTransaction(job.data);
       job.updateProgress(90);
-      if (resp.status === "failure") {
-        throw new Error(`Transaction failed: ${resp.status}`);
+      if (resp.digest === "") {
+        throw new Error(`Transaction failed`);
       }
       job.updateProgress(100);
-      return { jobId: job.id, digest: resp.digest };
+      return {
+        jobId: job.id,
+        requests_included: job.data.length,
+        digest: resp.digest,
+      };
     } catch (e) {
       console.error(`Error executing bulk of transactions: ${job.data} - `, e);
       throw e;
