@@ -74,7 +74,8 @@ and then `cd request_handler && bun test`.
 
 ### Load testing
 
-Install k6 with `brew install k6`
+Install k6 with `brew install k6`.
+
 Install ioredis with `bun install ioredis`.
 
 export the redis password as an env variable
