@@ -5,7 +5,7 @@ import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporte
 const responseTimeTrend = new Trend("response_time");
 
 export const options = {
-  iterations: 5000,
+  iterations: 50000,
 };
 
 export function handleSummary(data) {

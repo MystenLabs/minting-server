@@ -2,6 +2,7 @@ local keys = redis.call('keys', 'bull:requests-queue:*')
 local totalFinishedTime = 0
 local count = 0
 
+-- Extract timestamps from JSON-like string
 local function extract_timestamps(json_str)
     local timestamps = {}
     for match in json_str:gmatch('"timestamp":(%d+)') do
