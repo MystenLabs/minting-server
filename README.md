@@ -79,10 +79,10 @@ Install k6 with `brew install k6`.
 Install ioredis with `bun install ioredis`.
 
 export the redis password as an env variable
-`export REDIS_PASSWORD=<your_password>` so that it can be read by `stats.ts`. 
+`export REDIS_PASSWORD=<your_password>` so that it can be read by `stats.ts`.
 
 Run with: `cd load_testing/ && k6 run mint.js`.
 
 At the end of the test runs, a new `summary.html` file will be generated that contains the results of k6.
 
-If you need statistics about average response time, requests per second etc from the moment a request is handled to the moment it's completed, use `bun stats.ts`. 
+If you need statistics about average response time, requests per second etc from the moment a request is handled to the moment it's completed, use `bun stats.ts`.
