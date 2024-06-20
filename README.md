@@ -71,3 +71,15 @@ curl --request POST \
 The endpoint tests in the request handler require that the `queue` service is already up and running,
 so if you need to try it out, make sure to run first from the repo's root dir `docker compose up -d queue`
 and then `cd request_handler && bun test`.
+
+### Load testing
+Install k6 with `brew install k6`
+Install ioredis with `bun install ioredis`.
+
+export the redis password as an env variable
+`export REDIS_PASSWORD=<your_password>`
+
+Run with cd load_testing/ && k6 run mint.js.
+
+Every time, a new summary.html file will be
+generated.
