@@ -79,7 +79,7 @@ Install k6 with `brew install k6`.
 Install ioredis with `bun install ioredis`.
 
 export the redis password as an env variable
-`export REDIS_PASSWORD=<your_password>`
+`export REDIS_PASSWORD=<your_password>` so that it can be read by `stats.ts`. 
 
 Run with cd load_testing/ && k6 run mint.js.
 
