@@ -55,7 +55,7 @@ if total_requests > 0 then
 
     local requests_per_second = total_requests / time_span_sec
 
-    return { requests_per_second }
+    return { requests_per_second, total_requests }
 else
     return { 0 }
 end

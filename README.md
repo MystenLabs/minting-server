@@ -81,7 +81,9 @@ Install ioredis with `bun install ioredis`.
 export the redis password as an env variable
 `export REDIS_PASSWORD=<your_password>` so that it can be read by `stats.ts`.
 
-Run with: `cd load_testing/ && k6 run mint.js`.
+Run with: `cd load_testing/ && k6 run --vus <number of virtual users> --duration <time in seconds> mint.js`.
+
+For example vus = 2 and duration = 30s
 
 At the end of the test runs, a new `summary.html` file will be generated that contains the results of k6.
 

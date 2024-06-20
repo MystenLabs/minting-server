@@ -4,10 +4,6 @@ import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporte
 
 const responseTimeTrend = new Trend("response_time");
 
-export const options = {
-  iterations: 50000,
-};
-
 export function handleSummary(data) {
   console.log(
     `Average response time: ${data.metrics["response_time"].values["p(95)"]} ms`,
