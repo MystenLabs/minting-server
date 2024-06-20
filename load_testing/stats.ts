@@ -17,10 +17,14 @@ async function calculateAverages() {
     const rpsResult: any = await redis.eval(rpsScript, 0);
     const avgFinishedTime = avgResult;
     const medianResponseTime = medianResult;
-    const rps = rpsResult;
+    const rps = rpsResult[0];
+    const totalRequests = rpsResult[1];
     console.log(`Average Finished Time: ${avgFinishedTime} ms`);
-    console.log(`Median Response Time: ${medianResponseTime} ms`);
-    console.log(`Rquests Per Second: ${rps}`);
+    console.log(
+      `Median Queue Wait Time for Request Processing: ${medianResponseTime} ms`,
+    );
+    console.log(`Requests Per Second: ${rps}`);
+    console.log(`Requests: ${totalRequests}`);
   } catch (error) {
     console.error("Error running Lua script:", error);
   }
