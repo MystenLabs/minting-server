@@ -73,6 +73,7 @@ so if you need to try it out, make sure to run first from the repo's root dir `d
 and then `cd request_handler && bun test`.
 
 ### Load testing
+
 Install k6 with `brew install k6`
 Install ioredis with `bun install ioredis`.
 
