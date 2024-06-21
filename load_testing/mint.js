@@ -13,15 +13,26 @@ export function handleSummary(data) {
   };
 }
 
+export const options = {
+  scenarios: {
+    constant_request_rate: {
+      executor: "constant-arrival-rate",
+      rate: 400,
+      timeUnit: "1s",
+      duration: "1m",
+      preAllocatedVUs: 20,
+      maxVUs: 100,
+    },
+  },
+};
+
 export default function () {
   const url = "http://localhost:3000/";
   const payload = JSON.stringify({
     smartContractFunctionName: "mint_nft",
-    smartContractFunctionArguments: [
-      "0xc44fb22cb1786b4eae31ada831bb0fa2549612ea1dabec5231a792c9fa921f46",
-    ],
+    smartContractFunctionArguments: [process.env.ADMIN_CAP],
     receiverAddress:
-      "0xe40c8cf8b53822829b3a6dc9aea84b62653f60b771e9da4bd4e214cae851b87b",
+      "0x021318ee34c902120d579d3ed1c0a8e4109e67d386a97b841800b0a9763553ef",
   });
 
   const params = {
