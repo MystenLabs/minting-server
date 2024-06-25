@@ -2,24 +2,22 @@
 
 workspace {
     model {
-        client = softwareSystem  "Client System" "A client that needs to make a transaction."
-
+        client = softwareSystem  "Client System" "A client that needs to make transactions on Sui, either user or system."
         mintingServer = softwareSystem "${SYSTEM_NAME}" "Processes request and executes the transaction." {
-     
-                requestHandler = container "Request Handler API" "Checks the eligibility of the request. e.g. only one mint per client" "express.js"
-                requestProducer = container "Request Producer" "Creates new requests and adds then in the Queue"
-                requestConsumer = container "Request Consumer" "Consumes requests from the queue and executes them"
-            
 
-            database = container "Database" "Contains request queues to be processed by workers and keeps track of the request states." "Redis" {
+                requestHandler = container "Request Handler API" "Buffers incoming requests in batches of size N, empties every X milliseconds or when full." "express.js"
+                requestProcessor = container "Request Processor" "A service with a bullmq worker and Sui ParallelTransactionExecutor client that processes and executes queued requests. Executes a specified number of transactions concurrently based on setup." "BullMQ worker"
+
+
+            database = container "Database" "Contains request queues for worker processing and tracks request states." "Redis" {
                 tags "database"
             }
 
-           requestMonitor = container "Request Monitor" "Tracks the request states and the traffic of the system. Keeps logs, displays them on a dashboard and sends alerts upon certain  conditions." "Grafana"
+           requestMonitor = container "Request Monitor" "Monitors request states and system traffic in a GUI, logs activity, displays data on a dashboard. Hosted on localhost:3000." "Bull board"
 
-           notifier = container "Notifier" "Notifies the client regarding the state of the request." "Web Socket Server"
+           notifier = container "Notifier" "Provides a websocket for clients to subscribe and receive job completion notifications, informing them of request states. Hosted on: ws://localhost:3001" "Web Socket Server"
         }
-        
+
         sui = softwareSystem "Sui Network" "The Blockchain system"
 
         # Context level relationships
@@ -27,14 +25,13 @@ workspace {
         mintingServer -> sui "Executes transaction on"
 
         # Component level relationships
-        client -> requestHandler "Sends request to"
-        requestHandler -> requestProducer "Submits request for processing"
-        requestProducer -> database "Checks eligibility of request based on business rules and adds request to the queue"
-        database -> requestConsumer "Pulls requests from"
-        requestConsumer -> sui "Makes transaction calls to"
-        database -> requestMonitor "Monitor pulls request data and logs"
+        client -> requestHandler "Sends POST request to"
+        requestHandler -> database "Submits request for processing"
+        database -> requestProcessor "Pulls requests from"
+        requestProcessor -> sui "Makes transaction calls to"
+        database -> requestMonitor "Job states get depicted on"
 
-        requestConsumer -> notifier "Sends transaction results to"
+        requestProcessor -> notifier "Sends transaction results to"
         notifier -> client "Notifies client that the request's transactions has been completed"
     }
 

@@ -3,11 +3,10 @@
   "description" : "Description",
   "documentation" : { },
   "id" : 1,
-  "lastModifiedAgent" : "structurizr-javascript",
-  "lastModifiedDate" : "2024-06-25T08:55:36Z",
+  "lastModifiedDate" : "2024-06-25T09:47:14Z",
   "model" : {
     "softwareSystems" : [ {
-      "description" : "A client that needs to make a transaction.",
+      "description" : "A client that needs to make transactions on Sui, either user or system.",
       "documentation" : { },
       "id" : "1",
       "location" : "Unspecified",
@@ -18,18 +17,18 @@
       "relationships" : [ {
         "description" : "Request for sui transaction",
         "destinationId" : "2",
-        "id" : "10",
+        "id" : "9",
         "properties" : {
-          "structurizr.dsl.identifier" : "23baf114-6d07-4ba6-a4fd-c8d3238e43f8"
+          "structurizr.dsl.identifier" : "9e0fc7cd-bcf3-494a-b1a8-8f0bb6ebf1f5"
         },
         "sourceId" : "1",
         "tags" : "Relationship"
       }, {
-        "description" : "Sends request to",
+        "description" : "Sends POST request to",
         "destinationId" : "3",
-        "id" : "12",
+        "id" : "11",
         "properties" : {
-          "structurizr.dsl.identifier" : "7268208f-25a7-468e-8be7-ce493dab0f85"
+          "structurizr.dsl.identifier" : "84ba2a4a-25b5-4959-88a2-50a801aaedf8"
         },
         "sourceId" : "1",
         "tags" : "Relationship"
@@ -37,7 +36,7 @@
       "tags" : "Element,Software System"
     }, {
       "containers" : [ {
-        "description" : "Checks the eligibility of the request. e.g. only one mint per client",
+        "description" : "Buffers incoming requests in batches of size N, empties every X milliseconds or when full.",
         "documentation" : { },
         "id" : "3",
         "name" : "Request Handler API",
@@ -46,10 +45,10 @@
         },
         "relationships" : [ {
           "description" : "Submits request for processing",
-          "destinationId" : "4",
-          "id" : "13",
+          "destinationId" : "5",
+          "id" : "12",
           "properties" : {
-            "structurizr.dsl.identifier" : "c861e54a-faf5-49f0-9f2c-2012f09e6328"
+            "structurizr.dsl.identifier" : "a494a51d-afff-4425-849d-5e1a2dbacd28"
           },
           "sourceId" : "3",
           "tags" : "Relationship"
@@ -57,95 +56,77 @@
         "tags" : "Element,Container",
         "technology" : "express.js"
       }, {
-        "description" : "Creates new requests and adds then in the Queue",
+        "description" : "A service with a bullmq worker and Sui ParallelTransactionExecutor client that processes and executes queued requests. Executes a specified number of transactions concurrently based on setup.",
         "documentation" : { },
         "id" : "4",
-        "name" : "Request Producer",
+        "name" : "Request Processor",
         "properties" : {
-          "structurizr.dsl.identifier" : "requestproducer"
+          "structurizr.dsl.identifier" : "requestprocessor"
         },
         "relationships" : [ {
-          "description" : "Checks eligibility of request based on business rules and adds request to the queue",
-          "destinationId" : "6",
+          "description" : "Makes transaction calls to",
+          "destinationId" : "8",
           "id" : "14",
           "properties" : {
-            "structurizr.dsl.identifier" : "0590c18e-8c77-48c6-8420-87a065e837f8"
+            "structurizr.dsl.identifier" : "271fc271-f16a-4929-9f5f-c9699d9cd16a"
+          },
+          "sourceId" : "4",
+          "tags" : "Relationship"
+        }, {
+          "description" : "Sends transaction results to",
+          "destinationId" : "7",
+          "id" : "16",
+          "properties" : {
+            "structurizr.dsl.identifier" : "e796104e-26e2-430c-bfb0-58fc2b4ca3d5"
           },
           "sourceId" : "4",
           "tags" : "Relationship"
         } ],
-        "tags" : "Element,Container"
+        "tags" : "Element,Container",
+        "technology" : "BullMQ worker"
       }, {
-        "description" : "Consumes requests from the queue and executes them",
+        "description" : "Contains request queues for worker processing and tracks request states.",
         "documentation" : { },
         "id" : "5",
-        "name" : "Request Consumer",
-        "properties" : {
-          "structurizr.dsl.identifier" : "requestconsumer"
-        },
-        "relationships" : [ {
-          "description" : "Makes transaction calls to",
-          "destinationId" : "9",
-          "id" : "16",
-          "properties" : {
-            "structurizr.dsl.identifier" : "cafbe4eb-125b-435a-beb4-1717a38420f6"
-          },
-          "sourceId" : "5",
-          "tags" : "Relationship"
-        }, {
-          "description" : "Sends transaction results to",
-          "destinationId" : "8",
-          "id" : "18",
-          "properties" : {
-            "structurizr.dsl.identifier" : "0e8e4bfd-b0b9-4286-80b4-9dd9a1a8972e"
-          },
-          "sourceId" : "5",
-          "tags" : "Relationship"
-        } ],
-        "tags" : "Element,Container"
-      }, {
-        "description" : "Contains request queues to be processed by workers and keeps track of the request states.",
-        "documentation" : { },
-        "id" : "6",
         "name" : "Database",
         "properties" : {
           "structurizr.dsl.identifier" : "database"
         },
         "relationships" : [ {
           "description" : "Pulls requests from",
-          "destinationId" : "5",
-          "id" : "15",
+          "destinationId" : "4",
+          "id" : "13",
           "properties" : {
-            "structurizr.dsl.identifier" : "8025ce04-5763-4ef6-9464-e01ac3591b82"
+            "structurizr.dsl.identifier" : "ac1f21dc-de53-4ce3-97a4-182e97508254"
           },
-          "sourceId" : "6",
+          "sourceId" : "5",
           "tags" : "Relationship"
         }, {
-          "description" : "Monitor pulls request data and logs",
-          "destinationId" : "7",
-          "id" : "17",
+          "description" : "Job states get depicted on",
+          "destinationId" : "6",
+          "id" : "15",
           "properties" : {
-            "structurizr.dsl.identifier" : "906f2e6f-37df-4bbb-8e68-91e62ce5eb33"
+            "structurizr.dsl.identifier" : "b3e11f6f-4b0c-46d5-ac08-87d0ed1baaf1"
           },
-          "sourceId" : "6",
+          "sourceId" : "5",
           "tags" : "Relationship"
         } ],
         "tags" : "Element,Container,database",
         "technology" : "Redis"
       }, {
-        "description" : "Tracks the request states and the traffic of the system. Keeps logs, displays them on a dashboard and sends alerts upon certain  conditions.",
+        "description" : "Monitors request states and system traffic in a GUI, logs activity, displays data on a dashboard. Hosted on localhost:3000.",
         "documentation" : { },
-        "id" : "7",
+        "id" : "6",
         "name" : "Request Monitor",
         "properties" : {
           "structurizr.dsl.identifier" : "requestmonitor"
         },
         "tags" : "Element,Container",
-        "technology" : "Grafana"
+        "technology" : "Bull board"
       }, {
-        "description" : "Notifies the client regarding the state of the request.",
+        "description" : "Provides a websocket for clients to subscribe and receive job completion notifications, informing them of request states. Hosted on: ws://localhost:3001",
         "documentation" : { },
-        "id" : "8",
+        "id" : "7",
         "name" : "Notifier",
         "properties" : {
           "structurizr.dsl.identifier" : "notifier"
@@ -153,11 +134,11 @@
         "relationships" : [ {
           "description" : "Notifies client that the request's transactions has been completed",
           "destinationId" : "1",
-          "id" : "19",
+          "id" : "17",
           "properties" : {
-            "structurizr.dsl.identifier" : "815f316c-0a8d-4f85-950b-cea3ab2a7adf"
+            "structurizr.dsl.identifier" : "36dbb3de-5475-4a49-a3ac-8fae8c205feb"
           },
-          "sourceId" : "8",
+          "sourceId" : "7",
           "tags" : "Relationship"
         } ],
         "tags" : "Element,Container",
@@ -173,25 +154,25 @@
       },
       "relationships" : [ {
         "description" : "Executes transaction on",
-        "destinationId" : "9",
-        "id" : "11",
+        "destinationId" : "8",
+        "id" : "10",
         "properties" : {
-          "structurizr.dsl.identifier" : "2e10ce55-f00a-4509-8b4f-c9159dcca0c9"
+          "structurizr.dsl.identifier" : "6a3a821e-1bf0-4dee-b884-0e05e5667faa"
         },
         "sourceId" : "2",
         "tags" : "Relationship"
       }, {
         "description" : "Notifies client that the request's transactions has been completed",
         "destinationId" : "1",
-        "id" : "20",
-        "linkedRelationshipId" : "19",
+        "id" : "18",
+        "linkedRelationshipId" : "17",
         "sourceId" : "2"
       } ],
       "tags" : "Element,Software System"
     }, {
       "description" : "The Blockchain system",
       "documentation" : { },
-      "id" : "9",
+      "id" : "8",
       "location" : "Unspecified",
       "name" : "Sui Network",
       "properties" : {
@@ -202,13 +183,12 @@
   },
   "name" : "Name",
   "properties" : {
-    "structurizr.dsl" : "IWNvbnN0YW50IFNZU1RFTV9OQU1FICJNaW50aW5nIFNlcnZlciIKCndvcmtzcGFjZSB7CiAgICBtb2RlbCB7CiAgICAgICAgY2xpZW50ID0gc29mdHdhcmVTeXN0ZW0gICJDbGllbnQgU3lzdGVtIiAiQSBjbGllbnQgdGhhdCBuZWVkcyB0byBtYWtlIGEgdHJhbnNhY3Rpb24uIgoKICAgICAgICBtaW50aW5nU2VydmVyID0gc29mdHdhcmVTeXN0ZW0gIiR7U1lTVEVNX05BTUV9IiAiUHJvY2Vzc2VzIHJlcXVlc3QgYW5kIGV4ZWN1dGVzIHRoZSB0cmFuc2FjdGlvbi4iIHsKICAgICAKICAgICAgICAgICAgICAgIHJlcXVlc3RIYW5kbGVyID0gY29udGFpbmVyICJSZXF1ZXN0IEhhbmRsZXIgQVBJIiAiQ2hlY2tzIHRoZSBlbGlnaWJpbGl0eSBvZiB0aGUgcmVxdWVzdC4gZS5nLiBvbmx5IG9uZSBtaW50IHBlciBjbGllbnQiICJleHByZXNzLmpzIgogICAgICAgICAgICAgICAgcmVxdWVzdFByb2R1Y2VyID0gY29udGFpbmVyICJSZXF1ZXN0IFByb2R1Y2VyIiAiQ3JlYXRlcyBuZXcgcmVxdWVzdHMgYW5kIGFkZHMgdGhlbiBpbiB0aGUgUXVldWUiCiAgICAgICAgICAgICAgICByZXF1ZXN0Q29uc3VtZXIgPSBjb250YWluZXIgIlJlcXVlc3QgQ29uc3VtZXIiICJDb25zdW1lcyByZXF1ZXN0cyBmcm9tIHRoZSBxdWV1ZSBhbmQgZXhlY3V0ZXMgdGhlbSIKICAgICAgICAgICAgCgogICAgICAgICAgICBkYXRhYmFzZSA9IGNvbnRhaW5lciAiRGF0YWJhc2UiICJDb250YWlucyByZXF1ZXN0IHF1ZXVlcyB0byBiZSBwcm9jZXNzZWQgYnkgd29ya2VycyBhbmQga2VlcHMgdHJhY2sgb2YgdGhlIHJlcXVlc3Qgc3RhdGVzLiIgIlJlZGlzIiB7CiAgICAgICAgICAgICAgICB0YWdzICJkYXRhYmFzZSIKICAgICAgICAgICAgfQoKICAgICAgICAgICByZXF1ZXN0TW9uaXRvciA9IGNvbnRhaW5lciAiUmVxdWVzdCBNb25pdG9yIiAiVHJhY2tzIHRoZSByZXF1ZXN0IHN0YXRlcyBhbmQgdGhlIHRyYWZmaWMgb2YgdGhlIHN5c3RlbS4gS2VlcHMgbG9ncywgZGlzcGxheXMgdGhlbSBvbiBhIGRhc2hib2FyZCBhbmQgc2VuZHMgYWxlcnRzIHVwb24gY2VydGFpbiAgY29uZGl0aW9ucy4iICJHcmFmYW5hIgoKICAgICAgICAgICBub3RpZmllciA9IGNvbnRhaW5lciAiTm90aWZpZXIiICJOb3RpZmllcyB0aGUgY2xpZW50IHJlZ2FyZGluZyB0aGUgc3RhdGUgb2YgdGhlIHJlcXVlc3QuIiAiV2ViIFNvY2tldCBTZXJ2ZXIiCiAgICAgICAgfQogICAgICAgIAogICAgICAgIHN1aSA9IHNvZnR3YXJlU3lzdGVtICJTdWkgTmV0d29yayIgIlRoZSBCbG9ja2NoYWluIHN5c3RlbSIKCiAgICAgICAgIyBDb250ZXh0IGxldmVsIHJlbGF0aW9uc2hpcHMKICAgICAgICBjbGllbnQgLT4gbWludGluZ1NlcnZlciAiUmVxdWVzdCBmb3Igc3VpIHRyYW5zYWN0aW9uIgogICAgICAgIG1pbnRpbmdTZXJ2ZXIgLT4gc3VpICJFeGVjdXRlcyB0cmFuc2FjdGlvbiBvbiIKCiAgICAgICAgIyBDb21wb25lbnQgbGV2ZWwgcmVsYXRpb25zaGlwcwogICAgICAgIGNsaWVudCAtPiByZXF1ZXN0SGFuZGxlciAiU2VuZHMgcmVxdWVzdCB0byIKICAgICAgICByZXF1ZXN0SGFuZGxlciAtPiByZXF1ZXN0UHJvZHVjZXIgIlN1Ym1pdHMgcmVxdWVzdCBmb3IgcHJvY2Vzc2luZyIKICAgICAgICByZXF1ZXN0UHJvZHVjZXIgLT4gZGF0YWJhc2UgIkNoZWNrcyBlbGlnaWJpbGl0eSBvZiByZXF1ZXN0IGJhc2VkIG9uIGJ1c2luZXNzIHJ1bGVzIGFuZCBhZGRzIHJlcXVlc3QgdG8gdGhlIHF1ZXVlIgogICAgICAgIGRhdGFiYXNlIC0+IHJlcXVlc3RDb25zdW1lciAiUHVsbHMgcmVxdWVzdHMgZnJvbSIKICAgICAgICByZXF1ZXN0Q29uc3VtZXIgLT4gc3VpICJNYWtlcyB0cmFuc2FjdGlvbiBjYWxscyB0byIKICAgICAgICBkYXRhYmFzZSAtPiByZXF1ZXN0TW9uaXRvciAiTW9uaXRvciBwdWxscyByZXF1ZXN0IGRhdGEgYW5kIGxvZ3MiCgogICAgICAgIHJlcXVlc3RDb25zdW1lciAtPiBub3RpZmllciAiU2VuZHMgdHJhbnNhY3Rpb24gcmVzdWx0cyB0byIKICAgICAgICBub3RpZmllciAtPiBjbGllbnQgIk5vdGlmaWVzIGNsaWVudCB0aGF0IHRoZSByZXF1ZXN0J3MgdHJhbnNhY3Rpb25zIGhhcyBiZWVuIGNvbXBsZXRlZCIKICAgIH0KCiAgICB2aWV3cyB7CiAgICAgICAgc3lzdGVtQ29udGV4dCBtaW50aW5nU2VydmVyICJDb250ZXh0IiB7CiAgICAgICAgICAgIGluY2x1ZGUgKgogICAgICAgICAgICBhdXRvbGF5b3V0IGxyCiAgICAgICAgfQoKICAgICAgICBjb250YWluZXIgbWludGluZ1NlcnZlciAiQ29udGFpbmVyIiB7CiAgICAgICAgICAgIGluY2x1ZGUgKgoKICAgICAgICB9CgogICAgICAgIHN0eWxlcyB7CiAgICAgICAgICAgIGVsZW1lbnQgImRhdGFiYXNlIiB7CiAgICAgICAgICAgICAgICBzaGFwZSBDeWxpbmRlcgogICAgICAgICAgICB9CiAgICAgICAgfQoKICAgICAgICB0aGVtZXMgZGVmYXVsdAogICAgfQp9Cg=="
+    "structurizr.dsl" : "IWNvbnN0YW50IFNZU1RFTV9OQU1FICJNaW50aW5nIFNlcnZlciIKCndvcmtzcGFjZSB7CiAgICBtb2RlbCB7CiAgICAgICAgY2xpZW50ID0gc29mdHdhcmVTeXN0ZW0gICJDbGllbnQgU3lzdGVtIiAiQSBjbGllbnQgdGhhdCBuZWVkcyB0byBtYWtlIHRyYW5zYWN0aW9ucyBvbiBTdWksIGVpdGhlciB1c2VyIG9yIHN5c3RlbS4iCiAgICAgICAgbWludGluZ1NlcnZlciA9IHNvZnR3YXJlU3lzdGVtICIke1NZU1RFTV9OQU1FfSIgIlByb2Nlc3NlcyByZXF1ZXN0IGFuZCBleGVjdXRlcyB0aGUgdHJhbnNhY3Rpb24uIiB7CgogICAgICAgICAgICAgICAgcmVxdWVzdEhhbmRsZXIgPSBjb250YWluZXIgIlJlcXVlc3QgSGFuZGxlciBBUEkiICJCdWZmZXJzIGluY29taW5nIHJlcXVlc3RzIGluIGJhdGNoZXMgb2Ygc2l6ZSBOLCBlbXB0aWVzIGV2ZXJ5IFggbWlsbGlzZWNvbmRzIG9yIHdoZW4gZnVsbC4iICJleHByZXNzLmpzIgogICAgICAgICAgICAgICAgcmVxdWVzdFByb2Nlc3NvciA9IGNvbnRhaW5lciAiUmVxdWVzdCBQcm9jZXNzb3IiICJBIHNlcnZpY2Ugd2l0aCBhIGJ1bGxtcSB3b3JrZXIgYW5kIFN1aSBQYXJhbGxlbFRyYW5zYWN0aW9uRXhlY3V0b3IgY2xpZW50IHRoYXQgcHJvY2Vzc2VzIGFuZCBleGVjdXRlcyBxdWV1ZWQgcmVxdWVzdHMuIEV4ZWN1dGVzIGEgc3BlY2lmaWVkIG51bWJlciBvZiB0cmFuc2FjdGlvbnMgY29uY3VycmVudGx5IGJhc2VkIG9uIHNldHVwLiIgIkJ1bGxNUSB3b3JrZXIiCgoKICAgICAgICAgICAgZGF0YWJhc2UgPSBjb250YWluZXIgIkRhdGFiYXNlIiAiQ29udGFpbnMgcmVxdWVzdCBxdWV1ZXMgZm9yIHdvcmtlciBwcm9jZXNzaW5nIGFuZCB0cmFja3MgcmVxdWVzdCBzdGF0ZXMuIiAiUmVkaXMiIHsKICAgICAgICAgICAgICAgIHRhZ3MgImRhdGFiYXNlIgogICAgICAgICAgICB9CgogICAgICAgICAgIHJlcXVlc3RNb25pdG9yID0gY29udGFpbmVyICJSZXF1ZXN0IE1vbml0b3IiICJNb25pdG9ycyByZXF1ZXN0IHN0YXRlcyBhbmQgc3lzdGVtIHRyYWZmaWMgaW4gYSBHVUksIGxvZ3MgYWN0aXZpdHksIGRpc3BsYXlzIGRhdGEgb24gYSBkYXNoYm9hcmQuIEhvc3RlZCBvbiBsb2NhbGhvc3Q6MzAwMC4iICJCdWxsIGJvYXJkIgoKICAgICAgICAgICBub3RpZmllciA9IGNvbnRhaW5lciAiTm90aWZpZXIiICJQcm92aWRlcyBhIHdlYnNvY2tldCBmb3IgY2xpZW50cyB0byBzdWJzY3JpYmUgYW5kIHJlY2VpdmUgam9iIGNvbXBsZXRpb24gbm90aWZpY2F0aW9ucywgaW5mb3JtaW5nIHRoZW0gb2YgcmVxdWVzdCBzdGF0ZXMuIEhvc3RlZCBvbjogd3M6Ly9sb2NhbGhvc3Q6MzAwMSIgIldlYiBTb2NrZXQgU2VydmVyIgogICAgICAgIH0KCiAgICAgICAgc3VpID0gc29mdHdhcmVTeXN0ZW0gIlN1aSBOZXR3b3JrIiAiVGhlIEJsb2NrY2hhaW4gc3lzdGVtIgoKICAgICAgICAjIENvbnRleHQgbGV2ZWwgcmVsYXRpb25zaGlwcwogICAgICAgIGNsaWVudCAtPiBtaW50aW5nU2VydmVyICJSZXF1ZXN0IGZvciBzdWkgdHJhbnNhY3Rpb24iCiAgICAgICAgbWludGluZ1NlcnZlciAtPiBzdWkgIkV4ZWN1dGVzIHRyYW5zYWN0aW9uIG9uIgoKICAgICAgICAjIENvbXBvbmVudCBsZXZlbCByZWxhdGlvbnNoaXBzCiAgICAgICAgY2xpZW50IC0+IHJlcXVlc3RIYW5kbGVyICJTZW5kcyBQT1NUIHJlcXVlc3QgdG8iCiAgICAgICAgcmVxdWVzdEhhbmRsZXIgLT4gZGF0YWJhc2UgIlN1Ym1pdHMgcmVxdWVzdCBmb3IgcHJvY2Vzc2luZyIKICAgICAgICBkYXRhYmFzZSAtPiByZXF1ZXN0UHJvY2Vzc29yICJQdWxscyByZXF1ZXN0cyBmcm9tIgogICAgICAgIHJlcXVlc3RQcm9jZXNzb3IgLT4gc3VpICJNYWtlcyB0cmFuc2FjdGlvbiBjYWxscyB0byIKICAgICAgICBkYXRhYmFzZSAtPiByZXF1ZXN0TW9uaXRvciAiSm9iIHN0YXRlcyBnZXQgZGVwaWN0ZWQgb24iCgogICAgICAgIHJlcXVlc3RQcm9jZXNzb3IgLT4gbm90aWZpZXIgIlNlbmRzIHRyYW5zYWN0aW9uIHJlc3VsdHMgdG8iCiAgICAgICAgbm90aWZpZXIgLT4gY2xpZW50ICJOb3RpZmllcyBjbGllbnQgdGhhdCB0aGUgcmVxdWVzdCdzIHRyYW5zYWN0aW9ucyBoYXMgYmVlbiBjb21wbGV0ZWQiCiAgICB9CgogICAgdmlld3MgewogICAgICAgIHN5c3RlbUNvbnRleHQgbWludGluZ1NlcnZlciAiQ29udGV4dCIgewogICAgICAgICAgICBpbmNsdWRlICoKICAgICAgICAgICAgYXV0b2xheW91dCBscgogICAgICAgIH0KCiAgICAgICAgY29udGFpbmVyIG1pbnRpbmdTZXJ2ZXIgIkNvbnRhaW5lciIgewogICAgICAgICAgICBpbmNsdWRlICoKCiAgICAgICAgfQoKICAgICAgICBzdHlsZXMgewogICAgICAgICAgICBlbGVtZW50ICJkYXRhYmFzZSIgewogICAgICAgICAgICAgICAgc2hhcGUgQ3lsaW5kZXIKICAgICAgICAgICAgfQogICAgICAgIH0KCiAgICAgICAgdGhlbWVzIGRlZmF1bHQKICAgIH0KfQo="
   },
   "views" : {
     "configuration" : {
       "branding" : { },
       "lastSavedView" : "Container",
-      "metadataSymbols" : "SquareBrackets",
       "styles" : {
         "elements" : [ {
           "shape" : "Cylinder",
@@ -230,29 +210,25 @@
       }, {
         "id" : "3",
         "x" : 2020,
-        "y" : 535
+        "y" : 555
       }, {
         "id" : "4",
-        "x" : 1295,
-        "y" : 540
-      }, {
-        "id" : "5",
         "x" : 565,
         "y" : 1045
       }, {
+        "id" : "5",
+        "x" : 1295,
+        "y" : 550
+      }, {
         "id" : "6",
-        "x" : 1290,
+        "x" : 1295,
         "y" : 1045
       }, {
         "id" : "7",
-        "x" : 2030,
-        "y" : 1055
-      }, {
-        "id" : "8",
         "x" : 560,
         "y" : 535
       }, {
-        "id" : "9",
+        "id" : "8",
         "x" : 570,
         "y" : 1650
       } ],
@@ -260,6 +236,8 @@
       "key" : "Container",
       "order" : 2,
       "relationships" : [ {
+        "id" : "11"
+      }, {
         "id" : "12"
       }, {
         "id" : "13"
@@ -271,16 +249,12 @@
         "id" : "16"
       }, {
         "id" : "17"
-      }, {
-        "id" : "18"
-      }, {
-        "id" : "19"
       } ],
       "softwareSystemId" : "2"
     } ],
     "systemContextViews" : [ {
       "automaticLayout" : {
-        "applied" : true,
+        "applied" : false,
         "edgeSeparation" : 0,
         "implementation" : "Graphviz",
         "nodeSeparation" : 300,
@@ -288,40 +262,28 @@
         "rankSeparation" : 300,
         "vertices" : false
       },
-      "dimensions" : {
-        "height" : 786,
-        "width" : 2350
-      },
       "elements" : [ {
         "id" : "1",
-        "x" : 199,
-        "y" : 257
+        "x" : 0,
+        "y" : 0
       }, {
         "id" : "2",
-        "x" : 949,
-        "y" : 257
+        "x" : 0,
+        "y" : 0
       }, {
-        "id" : "9",
-        "x" : 1699,
-        "y" : 257
+        "id" : "8",
+        "x" : 0,
+        "y" : 0
       } ],
       "enterpriseBoundaryVisible" : true,
       "key" : "Context",
       "order" : 1,
       "relationships" : [ {
-        "id" : "10",
-        "vertices" : [ {
-          "x" : 799,
-          "y" : 557
-        } ]
+        "id" : "10"
       }, {
-        "id" : "11"
+        "id" : "18"
       }, {
-        "id" : "20",
-        "vertices" : [ {
-          "x" : 799,
-          "y" : 257
-        } ]
+        "id" : "9"
       } ],
       "softwareSystemId" : "2"
     } ]
