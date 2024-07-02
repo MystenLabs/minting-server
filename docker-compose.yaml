@@ -1,10 +1,4 @@
 services:
-  structurizr:
-    image: structurizr/lite:latest
-    volumes:
-      - ./docs:/usr/local/structurizr
-    ports:
-      - "8080:8080"
   queue:
     image: redis:latest
     ports:

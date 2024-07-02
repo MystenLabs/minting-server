@@ -3,7 +3,7 @@
   "description" : "Description",
   "documentation" : { },
   "id" : 1,
-  "lastModifiedDate" : "2024-06-25T09:47:14Z",
+  "lastModifiedDate" : "2024-07-02T09:25:02Z",
   "model" : {
     "softwareSystems" : [ {
       "description" : "A client that needs to make transactions on Sui, either user or system.",
@@ -19,7 +19,7 @@
         "destinationId" : "2",
         "id" : "9",
         "properties" : {
-          "structurizr.dsl.identifier" : "9e0fc7cd-bcf3-494a-b1a8-8f0bb6ebf1f5"
+          "structurizr.dsl.identifier" : "80e846bc-d6ad-4fd4-ba9d-0f63bf6a217a"
         },
         "sourceId" : "1",
         "tags" : "Relationship"
@@ -28,7 +28,7 @@
         "destinationId" : "3",
         "id" : "11",
         "properties" : {
-          "structurizr.dsl.identifier" : "84ba2a4a-25b5-4959-88a2-50a801aaedf8"
+          "structurizr.dsl.identifier" : "1051cea6-e5be-43c2-a76c-ef8860b73346"
         },
         "sourceId" : "1",
         "tags" : "Relationship"
@@ -48,7 +48,7 @@
           "destinationId" : "5",
           "id" : "12",
           "properties" : {
-            "structurizr.dsl.identifier" : "a494a51d-afff-4425-849d-5e1a2dbacd28"
+            "structurizr.dsl.identifier" : "c8f39fac-f25f-44fc-bf3b-ddfaf2d6c290"
           },
           "sourceId" : "3",
           "tags" : "Relationship"
@@ -68,7 +68,7 @@
           "destinationId" : "8",
           "id" : "14",
           "properties" : {
-            "structurizr.dsl.identifier" : "271fc271-f16a-4929-9f5f-c9699d9cd16a"
+            "structurizr.dsl.identifier" : "4f909295-e3a7-4afb-8961-6a376703eb61"
           },
           "sourceId" : "4",
           "tags" : "Relationship"
@@ -77,7 +77,7 @@
           "destinationId" : "7",
           "id" : "16",
           "properties" : {
-            "structurizr.dsl.identifier" : "e796104e-26e2-430c-bfb0-58fc2b4ca3d5"
+            "structurizr.dsl.identifier" : "e0f9b49d-25d0-4717-be5e-852515465264"
           },
           "sourceId" : "4",
           "tags" : "Relationship"
@@ -97,7 +97,7 @@
           "destinationId" : "4",
           "id" : "13",
           "properties" : {
-            "structurizr.dsl.identifier" : "ac1f21dc-de53-4ce3-97a4-182e97508254"
+            "structurizr.dsl.identifier" : "94dbdc9f-189c-4919-9179-45734f03505f"
           },
           "sourceId" : "5",
           "tags" : "Relationship"
@@ -106,7 +106,7 @@
           "destinationId" : "6",
           "id" : "15",
           "properties" : {
-            "structurizr.dsl.identifier" : "b3e11f6f-4b0c-46d5-ac08-87d0ed1baaf1"
+            "structurizr.dsl.identifier" : "0ae4f9ee-6ee8-4653-8156-012f21ef7eeb"
           },
           "sourceId" : "5",
           "tags" : "Relationship"
@@ -136,7 +136,7 @@
           "destinationId" : "1",
           "id" : "17",
           "properties" : {
-            "structurizr.dsl.identifier" : "36dbb3de-5475-4a49-a3ac-8fae8c205feb"
+            "structurizr.dsl.identifier" : "3e6d2ee9-c238-4540-83ae-b0ce5c1e3bfb"
           },
           "sourceId" : "7",
           "tags" : "Relationship"
@@ -157,7 +157,7 @@
         "destinationId" : "8",
         "id" : "10",
         "properties" : {
-          "structurizr.dsl.identifier" : "6a3a821e-1bf0-4dee-b884-0e05e5667faa"
+          "structurizr.dsl.identifier" : "e43d2b9a-5c03-4ed1-bf2b-c63e89384a04"
         },
         "sourceId" : "2",
         "tags" : "Relationship"
