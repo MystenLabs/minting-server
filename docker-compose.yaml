@@ -52,6 +52,9 @@ services:
       # because Sui's paralleltransactionexecutor assumes that there is only one instance
       # of it per account.
       replicas: 1
+    volumes:
+      - ./request_processor:/usr/src/app
+      - ./smart_contract_config.yaml:/usr/src/app/smart_contract_config.yaml
   notifier:
     image: tzalex/minting-server-notifier:latest
     depends_on:
