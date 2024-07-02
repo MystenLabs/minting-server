@@ -53,8 +53,7 @@ services:
       # of it per account.
       replicas: 1
     volumes:
-      - ./request_processor:/usr/src/app
-      - ./smart_contract_config.yaml:/usr/src/app/smart_contract_config.yaml
+      - .:/usr/src/minting_server/request_processor/configs
   notifier:
     image: tzalex/minting-server-notifier:latest
     depends_on:
