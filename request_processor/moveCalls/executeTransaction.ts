@@ -42,6 +42,33 @@ const executor = new ParallelTransactionExecutor({
   maxPoolSize: parseInt(process.env.PTE_MAX_POOL_SIZE ?? "10"),
 });
 
+async function dryRunTransaction(receivers: string[]): Promise<any> {
+    const transaction = await aggregateMoveCallsIntoATransaction([
+        {smartContractFunctionName: 'mint_nft', 
+        smartContractFunctionArguments: [ "0xdd33675337d769bc9cc4120e204afd8e3f6aa047b2a9ee5d6c6c1dcbc87bd169" ],
+        receiverAddress: "0x021318ee34c902120d579d3ed1c0a8e4109e67d386a97b841800b0a9763553ef" ,
+        timestamp: 0
+    }]);
+
+    const txBytes = await transaction.build({client: suiClient});
+    await suiClient
+    .dryRunTransactionBlock({
+        transactionBlock: txBytes,
+    })
+    .then((resp) => {
+        if (resp.effects.status.status !== "success") {
+            console.log(resp.effects);
+            return 0;
+          }
+          console.log("Success");
+          console.log(resp.balanceChanges);
+          return resp.balanceChanges;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+}
+
 export async function executeTransaction(receivers: QueueObject[]) {
   const transaction = await aggregateMoveCallsIntoATransaction(receivers);
   const res = await executor.executeTransaction(transaction);
