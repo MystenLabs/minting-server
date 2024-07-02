@@ -20,8 +20,9 @@ export async function aggregateMoveCallsIntoATransaction(
 Adds a move call based on the received queue object (inside a worker job) to the transaction object.
 */
 const addMoveCall = async (queueObject: QueueObject, tx: Transaction) => {
-  const availableFunctionsInContract =
-    (await smartContractFunctionConfig()).smartContractFunctions.map((x) => x.name);
+  const availableFunctionsInContract = (
+    await smartContractFunctionConfig()
+  ).smartContractFunctions.map((x) => x.name);
 
   const invalidMoveCall = !availableFunctionsInContract.includes(
     queueObject.smartContractFunctionName,
@@ -32,10 +33,11 @@ const addMoveCall = async (queueObject: QueueObject, tx: Transaction) => {
     );
   }
 
-  const functionArgumentsTypes =
-    (await smartContractFunctionConfig()).smartContractFunctions
-      .filter((f) => f.name == queueObject.smartContractFunctionName)
-      .map((f) => f.typesOfArguments);
+  const functionArgumentsTypes = (
+    await smartContractFunctionConfig()
+  ).smartContractFunctions
+    .filter((f) => f.name == queueObject.smartContractFunctionName)
+    .map((f) => f.typesOfArguments);
 
   let suiObject;
   const noFunctionArgumentsDeclaredinContract =
