@@ -52,8 +52,6 @@ services:
       # because Sui's paralleltransactionexecutor assumes that there is only one instance
       # of it per account.
       replicas: 1
-    volumes:
-      - .:/usr/src/minting_server/request_processor/configs
   notifier:
     image: tzalex/minting-server-notifier:latest
     depends_on:

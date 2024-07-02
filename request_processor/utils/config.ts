@@ -49,5 +49,6 @@ async function getSmartContractFunctionsConfig(): Promise<SmartContractFunctionC
   const contractSetup = YAML.parse(yaml_contents);
   return contractSetup as SmartContractFunctionConfig;
 }
-export const smartContractFunctionConfig: SmartContractFunctionConfig =
-  await getSmartContractFunctionsConfig();
+export const smartContractFunctionConfig = async (): Promise<SmartContractFunctionConfig> => {
+    return await getSmartContractFunctionsConfig();
+};

@@ -21,7 +21,7 @@ Adds a move call based on the received queue object (inside a worker job) to the
 */
 const addMoveCall = async (queueObject: QueueObject, tx: Transaction) => {
   const availableFunctionsInContract =
-    smartContractFunctionConfig.smartContractFunctions.map((x) => x.name);
+    (await smartContractFunctionConfig()).smartContractFunctions.map((x) => x.name);
 
   const invalidMoveCall = !availableFunctionsInContract.includes(
     queueObject.smartContractFunctionName,
@@ -33,7 +33,7 @@ const addMoveCall = async (queueObject: QueueObject, tx: Transaction) => {
   }
 
   const functionArgumentsTypes =
-    smartContractFunctionConfig.smartContractFunctions
+    (await smartContractFunctionConfig()).smartContractFunctions
       .filter((f) => f.name == queueObject.smartContractFunctionName)
       .map((f) => f.typesOfArguments);
 
