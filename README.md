@@ -33,7 +33,6 @@ This will generate a network of the containers:
 - `request_processor`: A worker that processes (consumes) the requests that have been queued up.
 - `notifier`: A websocket server that exposes (publishes) the results of the jobs to clients.
   You can open a websocket connection in your terminal with `websocat ws://localhost:3001`.
-- `structurizr`: This is a service enables you to explore the C4 diagram of our implementation with an interactive UI on `localhost:8080`.
 
 It is also necessary to create a `request_processor/smart_contract_config.yaml` where for each function
 of the smart contract you must provide the function name the function arguments types.
@@ -63,6 +62,16 @@ curl --request POST \
 	"receiver_address": "0xe40c8cf8b53822829b3a6dc9aea84b62653f60b771e9da4bd4e214cae851b87b"
 }'
 ```
+
+## Architecture diagrams
+
+The architecture of the system is described in the `docs/` directory.
+To edit the diagrams, you can edit the `docs/workspace.dsl` file.
+
+To see an interactive version of the diagrams: being on the project's root directory,
+run an instance of a `structurizr` container with: `docker run -it --rm -p 8080:8080 -v ./docs:/usr/local/structurizr structurizr/lite:latest `
+
+Access the UI on `localhost:8080`.
 
 ## Tests
 
