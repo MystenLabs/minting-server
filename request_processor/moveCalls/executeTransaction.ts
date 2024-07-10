@@ -47,19 +47,15 @@ const executor = new ParallelTransactionExecutor({
 
 export async function dryRunTransaction(): Promise<string | undefined> {
   try {
-    const tx = new Transaction();
-
-    let nft = tx.moveCall({
-      target: `${envVariables.PACKAGE_ADDRESS!}::${envVariables.MODULE_NAME}::mint_nft`,
-      arguments: [tx.object(envVariables.ADMIN_CAP!)],
-    });
-
-    tx.transferObjects(
-      [nft],
-      tx.pure.address(
-        "0x021318ee34c902120d579d3ed1c0a8e4109e67d386a97b841800b0a9763553ef",
-      ),
-    );
+    const tx = await aggregateMoveCallsIntoATransaction([
+      {
+        smartContractFunctionName: "mint_nft",
+        smartContractFunctionArguments: [process.env.ADMIN_CAP!],
+        receiverAddress:
+          "0x021318ee34c902120d579d3ed1c0a8e4109e67d386a97b841800b0a9763553ef",
+        timestamp: 0,
+      },
+    ]);
 
     tx.setSender(envVariables.ADMIN_ADDRESS!);
 
