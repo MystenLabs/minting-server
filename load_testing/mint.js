@@ -6,7 +6,7 @@ const responseTimeTrend = new Trend("response_time");
 
 export function handleSummary(data) {
   console.log(
-    `Average response time: ${data.metrics["response_time"].values["p(95)"]} ms`,
+    `Average response time: ${data.metrics["response_time"].values["p(95)"]} ms`
   );
   return {
     "summary.html": htmlReport(data),
@@ -31,7 +31,7 @@ export default function () {
   const payload = JSON.stringify({
     smartContractFunctionName: "mint_nft",
     smartContractFunctionArguments: [
-      "0xdd33675337d769bc9cc4120e204afd8e3f6aa047b2a9ee5d6c6c1dcbc87bd169",
+      "0xc44fb22cb1786b4eae31ada831bb0fa2549612ea1dabec5231a792c9fa921f46",
     ],
     receiverAddress:
       "0x021318ee34c902120d579d3ed1c0a8e4109e67d386a97b841800b0a9763553ef",

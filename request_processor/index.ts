@@ -1,5 +1,8 @@
 import { Job, Worker } from "bullmq";
-import { executeTransaction } from "./moveCalls/executeTransaction";
+import {
+  executeTransaction,
+  dryRunTransaction,
+} from "./moveCalls/executeTransaction";
 
 const redisConfig = {
   host: process.env.REDIS_HOST || "127.0.0.1",
@@ -17,8 +20,9 @@ const worker = new Worker(
     try {
       job.updateProgress(10);
       console.log(
-        `Executing transactions in bulk: ${JSON.stringify(job.data)}`,
+        `Executing transactions in bulk: ${JSON.stringify(job.data)}`
       );
+
       const resp = await executeTransaction(job.data);
       job.updateProgress(90);
       if (resp.digest === "") {
@@ -47,7 +51,7 @@ const worker = new Worker(
     concurrency: process.env.BULLMQ_WORKER_CONCURRENCY
       ? parseInt(process.env.BULLMQ_WORKER_CONCURRENCY)
       : 10,
-  },
+  }
 );
 
 worker.on("completed", async (job: Job) => {
@@ -56,7 +60,7 @@ worker.on("completed", async (job: Job) => {
     JSON.stringify({
       jobData: job.data,
       returnValue: job.returnvalue,
-    }),
+    })
   );
 });
 
@@ -72,7 +76,7 @@ worker.on("failed", (job?: Job, err?: Error, prev?: string) => {
     JSON.stringify({
       jobData: job.data,
       error: err.message,
-    }),
+    })
   );
 
   // TODO add retry
