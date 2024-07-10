@@ -21,11 +21,11 @@ const suiClient = new SuiClient({
 });
 
 let adminPrivateKeyArray = Uint8Array.from(
-  Array.from(fromB64(envVariables.ADMIN_SECRET_KEY!))
+  Array.from(fromB64(envVariables.ADMIN_SECRET_KEY!)),
 );
 
 const adminKeypair = Ed25519Keypair.fromSecretKey(
-  adminPrivateKeyArray.slice(1)
+  adminPrivateKeyArray.slice(1),
 );
 
 const balance = await dryRunTransaction();
@@ -35,10 +35,10 @@ const executor = new ParallelTransactionExecutor({
   signer: adminKeypair,
   coinBatchSize: parseInt(process.env.PTE_COIN_BATCH_SIZE ?? "20"),
   initialCoinBalance: BigInt(
-    Number(balance) * 1000 ?? process.env.PTE_INITIAL_COIN_BALANCE
+    Number(balance) * 1000 ?? process.env.PTE_INITIAL_COIN_BALANCE,
   ),
   minimumCoinBalance: BigInt(
-    Number(balance) * 1000 ?? process.env.PTE_MINIMUM_COIN_BALANCE
+    Number(balance) * 1000 ?? process.env.PTE_MINIMUM_COIN_BALANCE,
   ),
   // The maximum number of gas coins to keep in the gas pool,
   // which also limits the maximum number of concurrent transactions
@@ -57,8 +57,8 @@ export async function dryRunTransaction(): Promise<string | undefined> {
     tx.transferObjects(
       [nft],
       tx.pure.address(
-        "0x021318ee34c902120d579d3ed1c0a8e4109e67d386a97b841800b0a9763553ef"
-      )
+        "0x021318ee34c902120d579d3ed1c0a8e4109e67d386a97b841800b0a9763553ef",
+      ),
     );
 
     tx.setSender(envVariables.ADMIN_ADDRESS!);

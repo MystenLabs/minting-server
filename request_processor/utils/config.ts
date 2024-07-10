@@ -19,7 +19,7 @@ function getEnvVariables() {
 
   if (missingEnvVars.length > 0) {
     throw new Error(
-      `The following required environment variables are missing: ${missingEnvVars.join(", ")}`
+      `The following required environment variables are missing: ${missingEnvVars.join(", ")}`,
     );
   }
 
@@ -44,7 +44,7 @@ and what arguments they expect.
 */
 async function getSmartContractFunctionsConfig(): Promise<SmartContractFunctionConfig> {
   const yaml_contents: string = await Bun.file(
-    "./smart_contract_config.yaml"
+    "./smart_contract_config.yaml",
   ).text();
   const contractSetup = YAML.parse(yaml_contents);
   return contractSetup as SmartContractFunctionConfig;

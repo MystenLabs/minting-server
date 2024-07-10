@@ -20,7 +20,7 @@ const worker = new Worker(
     try {
       job.updateProgress(10);
       console.log(
-        `Executing transactions in bulk: ${JSON.stringify(job.data)}`
+        `Executing transactions in bulk: ${JSON.stringify(job.data)}`,
       );
 
       const resp = await executeTransaction(job.data);
@@ -51,7 +51,7 @@ const worker = new Worker(
     concurrency: process.env.BULLMQ_WORKER_CONCURRENCY
       ? parseInt(process.env.BULLMQ_WORKER_CONCURRENCY)
       : 10,
-  }
+  },
 );
 
 worker.on("completed", async (job: Job) => {
@@ -60,7 +60,7 @@ worker.on("completed", async (job: Job) => {
     JSON.stringify({
       jobData: job.data,
       returnValue: job.returnvalue,
-    })
+    }),
   );
 });
 
@@ -76,7 +76,7 @@ worker.on("failed", (job?: Job, err?: Error, prev?: string) => {
     JSON.stringify({
       jobData: job.data,
       error: err.message,
-    })
+    }),
   );
 
   // TODO add retry
