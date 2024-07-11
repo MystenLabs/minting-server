@@ -3,6 +3,32 @@
 A system that can process multiple Sui transactions in parallel using
 a producer-consumer worker scheme.
 
+## QuickStart
+
+### 1. Publish Your Smart Contracts
+Ensure that your smart contracts are published and accessible.
+
+### 2. Pull Docker Images
+Retrieve the necessary Docker images from Docker Hub using the following link: https://hub.docker.com/repositories/tzalex
+
+### 3. Configure Environment and Smart Contract Files
+- Specify the mandatory fields in the `.env` and `smart_contract_config.yaml` files.
+- To define the variables `PTE_INITIAL_COIN_BALANCE` and `PTE_MINIMUM_COIN_BALANCE`, use the `dryRunTransactionBlock` method. This will help you estimate the transaction costs.
+
+### 4. Deploy the Container
+Run the `deploy.sh` script to deploy the entire contrainer setup.
+
+### 5. Access the Dashboard
+You can view the progress of the jobs running in the dashboard. Access the dashboard at the URL that you deployed the service, on port 3000.
+
+The Dashboard provides comprehensive information about active, completed, and failed jobs.
+![Dashboard Overview](/media/DashboardOverview.png)
+
+It offers detailed insights into the status of completed jobs and error messages for failed transactions.
+![Completed Jobs](/media/CompletedJobs.png)
+![Failed Jobs](/media/FailedJobs.png)
+
+
 ## Implementation details
 
 - Runtime: https://bun.sh/
