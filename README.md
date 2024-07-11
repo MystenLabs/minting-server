@@ -17,7 +17,7 @@ Simply run `cd move/ && chmod +x ./publish.sh && ./publish.sh` to deploy the con
 A `.publish.res.json` file will be generated with important information that you will need to set up the cluster.
 These fields are used to configure the `request_processor` service and test the system using an example smart contract.
 
-Create a `.env` file to the root directory directory as indicated in the `.env.example` file.
+Create a `.env` file to the root directory as indicated in the `.env.example` file.
 
 Then, to set up the cluster simply run:
 
@@ -31,7 +31,7 @@ This will generate a network of the containers:
   You can access a [dashboard](https://github.com/felixmosh/bull-board) to monitor all the jobs on `localhost:3000`.
 - `queue`: A redis database that contains the queue of the requests (jobs) to be processed.
 - `request_processor`: A worker that processes (consumes) the requests that have been queued up.
-- `notifier`: A websocket server that exposes (publishes) the results of the jobs to clients.
+- `notifier`: A websocket server that exposes (publishes) the results of thef jobs to clients.
   You can open a websocket connection in your terminal with `websocat ws://localhost:3001`.
 
 It is also necessary to create a `request_processor/smart_contract_config.yaml` where for each function
