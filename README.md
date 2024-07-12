@@ -3,6 +3,41 @@
 A system that can process multiple Sui transactions in parallel using
 a producer-consumer worker scheme.
 
+## QuickStart
+
+### 1. Publish Your Smart Contracts
+
+Ensure that your smart contract is published and accessible. Refer to [the official guide](https://docs.sui.io/guides/developer/first-app/publish) for detailed instructions on how to publish a Sui smart contract(package).
+
+### 2. Download and unzip the latest release
+
+Download the latest release from [releases](https://github.com/MystenLabs/minting-server/releases). Extract the contents of the downloaded file and navigate to the extracted folder, which will be your working directory.
+
+The release file includes the following:
+
+- `smart_contract_config.yaml`: Specifies your contract's functions and the object types of their arguments.
+- `deploy.sh`: A script that deploys your minting server container network.
+- `docker-compose.yaml`: Defines the minting server services.
+
+### 3. Configure Environment and Smart Contract Files
+
+Fill in the mandatory fields in the `.env` and `smart_contract_config.yaml` files to match your environment and contract specifics.
+
+### 4. Deploy the Container
+
+Run `chmod u+x dpeloy.sh && ./deploy.sh` to deploy the entire container setup, ensuring all necessary components and configurations are correctly initialized and running.
+
+### 5. Access the Dashboard
+
+Monitor the progress of the jobs by accessing the dashboard at the URL where you deployed the service, on port 3000.
+
+The Dashboard provides comprehensive information about active, completed, and failed jobs.
+![Dashboard Overview](/media/DashboardOverview.png)
+
+It offers detailed insights into the status of completed jobs and error messages for failed transactions.
+![Completed Jobs](/media/CompletedJobs.png)
+![Failed Jobs](/media/FailedJobs.png)
+
 ## Implementation details
 
 - Runtime: https://bun.sh/
@@ -97,3 +132,37 @@ For example vus = 2 and duration = 30s
 At the end of the test runs, a new `summary.html` file will be generated that contains the results of k6.
 
 If you need statistics about average response time, requests per second etc from the moment a request is handled to the moment it's completed, use `bun stats.ts`.
+
+## Calculate gas cost
+
+To define the variables PTE_INITIAL_COIN_BALANCE and PTE_MINIMUM_COIN_BALANCE, use the dryRunTransactionBlock method from [Typescript SDK](https://sdk.mystenlabs.com/typescript). This approach helps you estimate the transaction costs by simulating the execution without actually performing it.
+
+For example, you can use a script like the following:
+
+```
+    const tx = new Transaction();
+
+    let result = tx.moveCall({
+      target: // contract function to call,
+      arguments: [
+        // the arguments of your function
+      ],
+    });
+
+    const txBytes = await tx.build({ client: suiClient });
+    let resp = await suiClient.dryRunTransactionBlock({
+      transactionBlock: txBytes,
+    });
+
+    if (resp.effects.status.status !== "success") {
+      console.log(resp.effects);
+      return undefined;
+    }
+
+    console.log("Success");
+    const amount = resp.balanceChanges[0]?.amount;
+    console.log(amount);
+    return amount;
+```
+
+Note that the result of this function will vary based on the move calls included in the transaction and the specific arguments provided.
