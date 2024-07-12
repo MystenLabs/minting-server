@@ -21,7 +21,7 @@ The release file includes the following:
 
 ### 3. Configure Environment and Smart Contract Files
 
-Fill in the mandatory fields in the .env and smart_contract_config.yaml files to match your environment and contract specifics.
+Fill in the mandatory fields in the `.env` and `smart_contract_config.yaml` files to match your environment and contract specifics.
 
 ### 4. Deploy the Container
 
