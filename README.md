@@ -135,7 +135,7 @@ If you need statistics about average response time, requests per second etc from
 
 ## Calculate gas cost
 
-To define the variables PTE_INITIAL_COIN_BALANCE and PTE_MINIMUM_COIN_BALANCE, use the dryRunTransactionBlock method. This approach helps you estimate the transaction costs by simulating the execution without actually performing it.
+To define the variables PTE_INITIAL_COIN_BALANCE and PTE_MINIMUM_COIN_BALANCE, use the dryRunTransactionBlock method from [Typescript SDK](https://sdk.mystenlabs.com/typescript). This approach helps you estimate the transaction costs by simulating the execution without actually performing it.
 
 For example, you can use a script like the following:
 
