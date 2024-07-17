@@ -9,7 +9,7 @@ services:
       - queue_data:/data
     command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
   request_handler:
-    image: tzalex/minting-server-request-handler:latest
+    image: mysten/minting-server-request-handler:latest
     depends_on:
       - queue
     volumes:
@@ -24,7 +24,7 @@ services:
       - STALE_BUFFER_TIMEOUT_MS=${STALE_BUFFER_TIMEOUT_MS}
       - NODE_ENV=development
   request_processor:
-    image: tzalex/minting-server-request-processor:latest
+    image: mysten/minting-server-request-processor:latest
     depends_on:
       - queue
     environment:
@@ -53,7 +53,7 @@ services:
       # of it per account.
       replicas: 1
   notifier:
-    image: tzalex/minting-server-notifier:latest
+    image: mysten/minting-server-notifier:latest
     depends_on:
       - request_processor
     ports:
