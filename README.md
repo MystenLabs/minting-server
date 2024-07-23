@@ -90,11 +90,10 @@ you can send a POST request to the `request_handler` service with the following 
 curl --request POST \
   --url 'http://localhost:3000/?=' \
   --header 'Content-Type: application/json' \
-  --header 'User-Agent: insomnia/9.2.0' \
   --data '{
-	"smart_contract_function_name": "mint_nft",
-	"smart_contract_function_arguments": ["0x9320eaaf945570b1baf7607f98a9cf5585fdcb8ed09d46da93199fee16b48196"],
-	"receiver_address": "0xe40c8cf8b53822829b3a6dc9aea84b62653f60b771e9da4bd4e214cae851b87b"
+	"smartContractFunctionName": "mint_nft",
+	"smartContractFunctionArguments": ["0x9320eaaf945570b1baf7607f98a9cf5585fdcb8ed09d46da93199fee16b48196"],
+	"receiverAddress": "0xe40c8cf8b53822829b3a6dc9aea84b62653f60b771e9da4bd4e214cae851b87b"
 }'
 ```
 
