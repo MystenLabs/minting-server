@@ -138,30 +138,30 @@ To define the variables PTE_INITIAL_COIN_BALANCE and PTE_MINIMUM_COIN_BALANCE, u
 
 For example, you can use a script like the following:
 
-```
-    const tx = new Transaction();
+```typescript
+const tx = new Transaction();
 
-    let result = tx.moveCall({
-      target: // contract function to call,
-      arguments: [
-        // the arguments of your function
-      ],
-    });
+let result = tx.moveCall({
+target: // contract function to call,
+arguments: [
+// the arguments of your function
+   ],
+});
 
-    const txBytes = await tx.build({ client: suiClient });
-    let resp = await suiClient.dryRunTransactionBlock({
-      transactionBlock: txBytes,
-    });
+const txBytes = await tx.build({ client: suiClient });
+let resp = await suiClient.dryRunTransactionBlock({
+    transactionBlock: txBytes,
+});
 
-    if (resp.effects.status.status !== "success") {
-      console.log(resp.effects);
-      return undefined;
-    }
+if (resp.effects.status.status !== "success") {
+    console.log(resp.effects);
+    return undefined;
+}
 
-    console.log("Success");
-    const amount = resp.balanceChanges[0]?.amount;
-    console.log(amount);
-    return amount;
+console.log("Success");
+const amount = resp.balanceChanges[0]?.amount;
+console.log(amount);
+return amount;
 ```
 
 Note that the result of this function will vary based on the move calls included in the transaction and the specific arguments provided.
