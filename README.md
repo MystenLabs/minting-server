@@ -25,7 +25,7 @@ Fill in the mandatory fields in the `.env` and `smart_contract_config.yaml` file
 
 ### 4. Deploy the Container
 
-Run `chmod u+x dpeloy.sh && ./deploy.sh` to deploy the entire container setup, ensuring all necessary components and configurations are correctly initialized and running.
+Run `chmod u+x deploy.sh && ./deploy.sh` to deploy the entire container setup, ensuring all necessary components and configurations are correctly initialized and running.
 
 ### 5. Access the Dashboard
 
@@ -47,6 +47,10 @@ It offers detailed insights into the status of completed jobs and error messages
 
 To test the system locally, you need to first publish an example smart contract.
 We provide an example contract in the `move` directory.
+
+[Optional] Export an `ADMIN_ADDRESS` in your terminal with the address you want to use as the admin. Otherwise, the current CLI selected address will be used.
+
+[Optional] Export an `ADMIN_PHRASE` in your terminal if you want to use a brand new wallet. Otherwise, the current CLI selected wallet will be used.
 
 Simply run `cd move/ && chmod +x ./publish.sh && ./publish.sh` to deploy the contract to the Sui network.
 A `.publish.res.json` file will be generated with important information that you will need to set up the cluster.
