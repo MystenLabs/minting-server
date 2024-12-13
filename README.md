@@ -56,7 +56,9 @@ Create a `.env` file to the root directory as indicated in the `.env.example` fi
 
 Then, to set up the cluster simply run:
 
-`docker compose up -d --build`
+`bun run deploy-${ENV}`
+
+Where `ENV` can be `local` or `prod`.
 
 > Tip: to quickly test your changes back to back, rebuild the services use `docker compose down && docker compose up -d --build --force-recreate`.
 

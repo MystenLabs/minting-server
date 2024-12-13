@@ -10,7 +10,8 @@ services:
     command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
   request_handler:
     build:
-      dockerfile: ./request_handler/Dockerfile
+      context: ./request_handler
+      dockerfile: Dockerfile
     depends_on:
       - queue
     volumes:
@@ -26,7 +27,8 @@ services:
       - NODE_ENV=development
   request_processor:
     build:
-      dockerfile: ./request_processor/Dockerfile
+      context: ./request_processor
+      dockerfile: Dockerfile
     depends_on:
       - queue
     environment:
@@ -56,7 +58,8 @@ services:
       replicas: 1
   notifier:
     build:
-      dockerfile: ./notifier/Dockerfile
+      context: ./notifier
+      dockerfile: Dockerfile
     depends_on:
       - request_processor
     ports:
