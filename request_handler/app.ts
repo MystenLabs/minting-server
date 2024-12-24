@@ -36,7 +36,7 @@ app.post(
     } catch (error) {
       res.status(500).send("Failed to interact with queuing service.");
     }
-  }
+  },
 );
 
 app.get("/healthcheck", async (_: Request, res: Response) => {
