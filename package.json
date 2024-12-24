@@ -9,6 +9,8 @@
   },
   "scripts": {
     "fix-format": "bun prettier . --write",
-    "check-format": "bun prettier . --check"
+    "check-format": "bun prettier . --check",
+    "deploy-local": "chmod u+x deploy.sh && ./deploy.sh local",
+    "deploy-prod": "chmod u+x deploy.sh && ./deploy.sh"
   }
 }

@@ -1,0 +1,68 @@
+services:
+  queue:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    volumes:
+      - queue_data:/data
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
+  request_handler:
+    build:
+      context: ./request_handler
+      dockerfile: Dockerfile
+    depends_on:
+      - queue
+    volumes:
+      - .:/usr/src/minting_server/request_handler
+    ports:
+      - "3000:3000"
+    environment:
+      - REDIS_HOST=queue
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - BUFFER_SIZE=${BUFFER_SIZE}
+      - STALE_BUFFER_TIMEOUT_MS=${STALE_BUFFER_TIMEOUT_MS}
+      - NODE_ENV=development
+  request_processor:
+    build:
+      context: ./request_processor
+      dockerfile: Dockerfile
+    depends_on:
+      - queue
+    environment:
+      - REDIS_HOST=queue
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - JOB_RETRIES=${JOB_RETRIES}
+      - JOB_RETRY_DELAY=${JOB_RETRY_DELAY}
+      - PACKAGE_ADDRESS=${PACKAGE_ADDRESS}
+      - MODULE_NAME=${MODULE_NAME}
+      - ADMIN_SECRET_KEY=${ADMIN_SECRET_KEY}
+      - ADMIN_CAP=${ADMIN_CAP}
+      - ADMIN_ADDRESS=${ADMIN_ADDRESS}
+      - PTE_COIN_BATCH_SIZE=${PTE_COIN_BATCH_SIZE}
+      - PTE_INITIAL_COIN_BALANCE=${PTE_INITIAL_COIN_BALANCE}
+      - PTE_MINIMUM_COIN_BALANCE=${PTE_MINIMUM_COIN_BALANCE}
+      - PTE_MAX_POOL_SIZE=${PTE_MAX_POOL_SIZE}
+      - NETWORK=${NETWORK}
+      - BULLMQ_WORKER_CONCURRENCY=${BULLMQ_WORKER_CONCURRENCY}
+      - NODE_ENV=development
+    deploy:
+      mode: replicated
+      # Change the number of replicas to increase the number of request processors
+      # Warning! You will need a different admin account for each request processor
+      # because Sui's paralleltransactionexecutor assumes that there is only one instance
+      # of it per account.
+      replicas: 1
+  notifier:
+    build:
+      context: ./notifier
+      dockerfile: Dockerfile
+    depends_on:
+      - request_processor
+    ports:
+      - "3001:3001"
+volumes:
+  queue_data:
