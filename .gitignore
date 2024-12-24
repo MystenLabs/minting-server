@@ -8,3 +8,4 @@ build/
 Move.lock
 .publish.res.json
 summary.html
+.structurizr
