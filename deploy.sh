@@ -16,14 +16,26 @@ else
   exit 1
 fi
 
-docker compose down && docker compose up --build -d --force-recreate
+ENV="prod"
+DOCKER_FILE="docker-compose.yaml"
+
+if [ $# -ne 0 ]; then
+  if [ $1 = "local" ]; then
+    ENV="local"
+    DOCKER_FILE="docker-compose.local.yaml"
+  fi
+fi
+
+echo "Deploying the minting-server container network in $ENV mode..."
+
+docker compose -f $DOCKER_FILE down && docker compose -f $DOCKER_FILE up --build -d --force-recreate
 
 if [[ $? -ne 0 ]]; then
   echo "ERROR: Failed to deploy the minting-server container network. Check your configuration and try again."
   exit 1
 fi
 
-docker compose cp ./smart_contract_config.yaml request_processor:/usr/src/app
+docker compose -f $DOCKER_FILE cp ./smart_contract_config.yaml request_processor:/usr/src/app
 
 if [[ $? -ne 0 ]]; then
   echo "ERROR: Failed to copy smart_contract_config.yaml to the request_processor container."
