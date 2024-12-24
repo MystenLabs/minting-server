@@ -1,4 +1,4 @@
-import { fromB64 } from "@mysten/sui/utils";
+import { fromBase64 } from "@mysten/sui/utils";
 import { Ed25519Keypair } from "@mysten/sui/keypairs/ed25519";
 import { SuiClient, getFullnodeUrl } from "@mysten/sui/client";
 import { aggregateMoveCallsIntoATransaction } from "./prepareTransaction";
@@ -20,11 +20,11 @@ const suiClient = new SuiClient({
 });
 
 let adminPrivateKeyArray = Uint8Array.from(
-  Array.from(fromB64(envVariables.ADMIN_SECRET_KEY!)),
+  Array.from(fromBase64(envVariables.ADMIN_SECRET_KEY!))
 );
 
 const adminKeypair = Ed25519Keypair.fromSecretKey(
-  adminPrivateKeyArray.slice(1),
+  adminPrivateKeyArray.slice(1)
 );
 
 const executor = new ParallelTransactionExecutor({
@@ -32,10 +32,10 @@ const executor = new ParallelTransactionExecutor({
   signer: adminKeypair,
   coinBatchSize: parseInt(process.env.PTE_COIN_BATCH_SIZE ?? "20"),
   initialCoinBalance: BigInt(
-    process.env.PTE_INITIAL_COIN_BALANCE ?? 5_000_000_000,
+    process.env.PTE_INITIAL_COIN_BALANCE ?? 5_000_000_000
   ),
   minimumCoinBalance: BigInt(
-    process.env.PTE_MINIMUM_COIN_BALANCE ?? 500_000_000,
+    process.env.PTE_MINIMUM_COIN_BALANCE ?? 500_000_000
   ),
   // The maximum number of gas coins to keep in the gas pool,
   // which also limits the maximum number of concurrent transactions

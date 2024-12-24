@@ -1,13 +1,11 @@
 {
   "type": "module",
   "dependencies": {
-    "@mysten/sui": "^1.0.5",
-    "@types/bun": "^1.1.4",
-    "@types/js-yaml": "^4.0.9",
-    "bullmq": "^5.7.11",
-    "dotenv": "^16.4.5",
-    "js-yaml": "^4.1.0",
-    "yaml": "^2.4.5"
+    "@mysten/sui": "^1.18.0",
+    "@types/bun": "^1.1.14",
+    "bullmq": "^5.34.4",
+    "dotenv": "^16.4.7",
+    "yaml": "^2.6.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -15,6 +13,6 @@
     "build": "bun build . --target bun"
   },
   "devDependencies": {
-    "@types/node": "^20.14.2"
+    "@types/node": "^22.10.2"
   }
 }
