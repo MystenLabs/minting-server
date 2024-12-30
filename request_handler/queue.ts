@@ -7,12 +7,41 @@ const redisConfig = {
   password: process.env.REDIS_PASSWORD,
 };
 
-export type QueueObject = {
+export type ExecutionContextValues = "SmartContract" | "PTB";
+
+export type SmartContractQueueObject = {
+  executionContext: ExecutionContextValues;
+  timestamp: number;
   smartContractFunctionName: string;
   smartContractFunctionArguments: string[];
   receiverAddress?: string;
-  timestamp: number;
 };
+
+export type PTBArgument = {
+  type: "object" | "pure" | "command-result";
+  value: string;
+};
+
+export type PTBCommand = {
+  target: string;
+  arguments: PTBArgument[];
+  typeArguments: string[];
+};
+
+export type PTBQueueObject = {
+  executionContext: ExecutionContextValues;
+  timestamp: number;
+  commands: PTBCommand[];
+};
+
+export type QueueObject = SmartContractQueueObject | PTBQueueObject;
+
+export const isSmartContractQueueObject = (
+  x: any,
+): x is SmartContractQueueObject => x.executionContext === "SmartContract";
+
+export const isPTBQueueObject = (x: any): x is PTBQueueObject =>
+  x.executionContext === "PTB";
 
 export const requestsQueue = new Queue("requests-queue", {
   connection: redisConfig,
