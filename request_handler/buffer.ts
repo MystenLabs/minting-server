@@ -1,9 +1,4 @@
-import {
-  PTBQueueObject,
-  QueueObject,
-  SmartContractQueueObject,
-  enqueRequest,
-} from "./queue";
+import { QueueObject, enqueRequest } from "./queue";
 import express from "express";
 
 const maxBatchSize = parseInt(process.env.BUFFER_SIZE ?? "10");
@@ -33,27 +28,12 @@ export async function enqueueToBatchBuffer(
     console.log(
       `Adding request to buffer... ${batchBuffer.length}/${maxBatchSize}`,
     );
-    switch (req.body.executionContext) {
-      case "SmartContract":
-        batchBuffer.push({
-          executionContext: "SmartContract",
-          timestamp: timestamp,
-          smartContractFunctionName: req.body.smartContractFunctionName,
-          smartContractFunctionArguments:
-            req.body.smartContractFunctionArguments,
-          receiverAddress: req.body.receiverAddress,
-        } as SmartContractQueueObject);
-        break;
-      case "PTB":
-        batchBuffer.push({
-          executionContext: "PTB",
-          timestamp: timestamp,
-          commands: req.body.commands,
-        } as PTBQueueObject);
-        break;
-      default:
-        throw new Error("Invalid execution context");
-    }
+
+    batchBuffer.push({
+      timestamp: timestamp,
+      commands: req.body.commands,
+    });
+
     if (!staleBufferIntervalRunning) {
       staleBufferIntervalRunning = true;
       setTimeout(async () => {

@@ -2,7 +2,9 @@
 # based on the move/example_contract of the project's root dir.
 smartContractFunctions:
   - name: "mint_nft" # The name of the function in the smart contract
-    typesOfArguments: ["object"] # The types of arguments that the function takes
+    argumentTypes: ["object"] # The types of arguments that the function takes
+    typeArguments: [] # The type arguments if generic types are used
   # You can specify more functions here e.g.
   # - name: "burn_nft"
-  #   typesOfArguments: ["object", "pure"]
+  #   argumentTypes: ["object", "u64"]
+  #   typeArguments: ["0x2::sui::SUI"]

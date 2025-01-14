@@ -1,90 +1,16 @@
 import { Transaction, TransactionResult } from "@mysten/sui/transactions";
-import {
-  ExecutionContextValues,
-  PTBCommand,
-  PTBQueueObject,
-  SmartContractQueueObject,
-} from "../../request_handler/queue";
+import { PTBCommand, PTBQueueObject } from "../../request_handler/queue";
 import { envVariables, smartContractFunctionConfig } from "../utils/config";
-import { checkIfResultIndexIsValid } from "../utils/helpers";
+import { checkIfResultIndexIsValid, createTarget } from "../utils/helpers";
 
 export abstract class ExecutionContext {
-  protected context: ExecutionContextValues;
+  protected context: String;
 
-  constructor(context: ExecutionContextValues) {
+  constructor(context: String) {
     this.context = context;
   }
 
   abstract prepareCall(tx: Transaction): Promise<void>;
-}
-
-export class SmartContractExecutionContext extends ExecutionContext {
-  protected smartContractFunctionName: string;
-  protected smartContractFunctionArguments: string[];
-  protected receiverAddress?: string;
-  protected timestamp: number;
-  constructor(queueObject: SmartContractQueueObject) {
-    super("SmartContract");
-    this.smartContractFunctionName = queueObject.smartContractFunctionName;
-    this.smartContractFunctionArguments =
-      queueObject.smartContractFunctionArguments;
-    this.receiverAddress = queueObject.receiverAddress;
-    this.timestamp = queueObject.timestamp;
-  }
-
-  /*
-  // Adds a move call based on the received queue object (inside a worker job) to the transaction object.
-  */
-  async prepareCall(tx: Transaction): Promise<void> {
-    const availableFunctionsInContract = (
-      await smartContractFunctionConfig()
-    ).smartContractFunctions.map((x) => x.name);
-
-    const invalidMoveCall = !availableFunctionsInContract.includes(
-      this.smartContractFunctionName,
-    );
-    if (invalidMoveCall) {
-      throw new Error(
-        `Function ${this.smartContractFunctionArguments} not present in the smart contract. Available functions: ${availableFunctionsInContract}`,
-      );
-    }
-
-    const functionArgumentsTypes = (
-      await smartContractFunctionConfig()
-    ).smartContractFunctions
-      .filter((f) => f.name == this.smartContractFunctionName)
-      .flatMap((f) => f.typesOfArguments);
-
-    let suiObject;
-    const noFunctionArgumentsDeclaredinContract =
-      functionArgumentsTypes.length == 0;
-    if (noFunctionArgumentsDeclaredinContract) {
-      suiObject = tx.moveCall({
-        target: `${envVariables.PACKAGE_ADDRESS!}::${envVariables.MODULE_NAME}::${this.smartContractFunctionName}`,
-      });
-    } else {
-      suiObject = tx.moveCall({
-        target: `${envVariables.PACKAGE_ADDRESS!}::${envVariables.MODULE_NAME}::${this.smartContractFunctionName}`,
-
-        // Depending on the smart contract configuration, map the arguments to the correct object type.
-        arguments: this.smartContractFunctionArguments.map((argument, i) => {
-          switch (functionArgumentsTypes[i]) {
-            case "object": {
-              return tx.object(argument);
-            }
-            default: {
-              return tx.pure(argument as any);
-            }
-          }
-        }),
-      });
-    }
-
-    // Transfer the sui object to the receiver address if it is present.
-    if (suiObject && this.receiverAddress) {
-      tx.transferObjects([suiObject], tx.pure.address(this.receiverAddress));
-    }
-  }
 }
 
 export class PTBExecutionContext extends ExecutionContext {
@@ -100,16 +26,45 @@ export class PTBExecutionContext extends ExecutionContext {
     // TODO: Should results be stored per PTB execution or per buffer aggregated execution?
     const transactionResults = new Array<TransactionResult>();
     for (const [index, command] of this.commands.entries()) {
+      const ptbTarget = createTarget(command.target);
+      const ptbTargetFunctionName = ptbTarget.split("::")[2];
+
+      // Function validation
+      const availableFunctionsInContract = (
+        await smartContractFunctionConfig()
+      ).smartContractFunctions.map((x) => x.name);
+
+      const invalidMoveCall = !availableFunctionsInContract.includes(
+        ptbTargetFunctionName,
+      );
+      // TODO: This will throw an error if framework functions are not included in the smart contract config yaml.
+      if (invalidMoveCall) {
+        throw new Error(
+          `Function ${ptbTargetFunctionName} not present in the smart contract. Available functions: ${availableFunctionsInContract}`,
+        );
+      }
+
+      const functionArgumentsTypes = (
+        await smartContractFunctionConfig()
+      ).smartContractFunctions
+        .filter((f) => f.name == ptbTargetFunctionName)
+        .flatMap((f) => f.argumentTypes);
+
       let result = tx.moveCall({
-        target: command.target,
+        target: ptbTarget,
         typeArguments: command.typeArguments,
-        arguments: command.arguments.map((arg) => {
+        arguments: command.arguments.map((arg, index) => {
           switch (arg.type) {
-            case "object":
-              return tx.object(arg.value);
-            case "pure":
+            case "request-input":
               // TODO: Should probably support more granular types of arguments (e.g: string, array, address, u8, u64, etc)
-              return tx.pure(arg.value as any);
+              if (functionArgumentsTypes[index] === "object") {
+                return tx.object(arg.value);
+              } else {
+                // TODO: Typescript is not liking this
+                return tx["pure"][functionArgumentsTypes[index]](
+                  arg.value as any,
+                );
+              }
             case "command-result":
               const indexes = arg.value.split("-");
               if (indexes.length == 1) {

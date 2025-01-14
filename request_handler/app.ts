@@ -19,21 +19,10 @@ app.use("/", serverAdapter.getRouter());
 app.use(express.json());
 app.post(
   "/",
-  check("executionContext").isIn(["SmartContract", "PTB"]),
-  check("commands")
-    .isArray()
-    .if((req) => req.body.executionContext === "PTB"),
-  check("smartContractFunctionName")
-    .trim()
-    .notEmpty()
-    .if((req) => req.body.executionContext === "SmartContract"),
-  check("smartContractFunctionArguments")
-    .isArray()
-    .if((req) => req.body.executionContext === "SmartContract"),
-  check("receiverAddress")
-    .optional()
-    .isString()
-    .if((req) => req.body.executionContext === "SmartContract"),
+  check("commands").isArray(),
+  check("commands.*.target").isString().notEmpty(),
+  check("commands.*.arguments").isArray(),
+  check("commands.*.typeArguments").optional().isArray(),
   async (req: Request, res: Response) => {
     // First check if there have been any errors on validation.
     const timestamp = Math.floor(new Date().getTime());

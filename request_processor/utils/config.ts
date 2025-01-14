@@ -11,6 +11,7 @@ function getEnvVariables() {
     ADMIN_SECRET_KEY: process.env.ADMIN_SECRET_KEY,
     ADMIN_CAP: process.env.ADMIN_CAP,
     ADMIN_ADDRESS: process.env.ADMIN_ADDRESS,
+    SUPPORTED_FRAMEWORK_MODULES: process.env.SUPPORTED_FRAMEWORK_MODULES,
   };
 
   const missingEnvVars = Object.entries(requiredEnvVars)
@@ -28,10 +29,14 @@ function getEnvVariables() {
 
 export const envVariables = getEnvVariables();
 
+// TODO: Add more argument types as needed
+type ArgumentTypes = "object" | "u64" | "u8" | "address" | "string" | "bool";
+
 export type SmartContractFunctionConfig = {
   smartContractFunctions: {
     name: string;
-    typesOfArguments: [string];
+    argumentTypes: [ArgumentTypes];
+    typeArguments: [string];
   }[];
 };
 
