@@ -1,4 +1,4 @@
-!constant SYSTEM_NAME "Minting Server"
+!const SYSTEM_NAME "Minting Server"
 
 workspace {
     model {

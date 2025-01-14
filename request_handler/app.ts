@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import { requestsQueue } from "./queue";
 import { body, check, validationResult } from "express-validator";
 import { createBullBoard } from "@bull-board/api";
@@ -22,28 +22,28 @@ app.post(
   check("smartContractFunctionName").trim().notEmpty(),
   check("smartContractFunctionArguments").isArray(),
   check("receiverAddress").optional().isString(),
-  async (req: express.Request, res: express.Response) => {
+  async (req: Request, res: Response) => {
     // First check if there have been any errors on validation.
     const timestamp = Math.floor(new Date().getTime());
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      res.status(400).json({ errors: errors.array() });
     }
     // Proceed to push the request to the queue.
     try {
       await enqueueToBatchBuffer(req, timestamp);
-      return res.status(202).send(`Accepted: Request was successfully queued.`);
+      res.status(202).send(`Accepted: Request was successfully queued.`);
     } catch (error) {
-      return res.status(500).send("Failed to interact with queuing service.");
+      res.status(500).send("Failed to interact with queuing service.");
     }
   },
 );
 
-app.get("/healthcheck", async (_: express.Request, res: express.Response) => {
+app.get("/healthcheck", async (_: Request, res: Response) => {
   try {
-    return res.status(200).send("OK.");
+    res.status(200).send("OK.");
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Internal server error!");
+    res.status(500).send("Internal server error!");
   }
 });
