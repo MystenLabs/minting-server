@@ -2,7 +2,7 @@ import { envVariables } from "../utils/config";
 import { SUI_FRAMEWORK_ADDRESS } from "@mysten/sui/utils";
 
 export const checkIfResultIndexIsValid = (
-  index: number,
+  commandIndex: number,
   resultIndex: number,
 ) => {
   if (isNaN(resultIndex)) {
@@ -10,9 +10,9 @@ export const checkIfResultIndexIsValid = (
       `Invalid index. Result index '${resultIndex}' is not a number.`,
     );
   }
-  if (resultIndex >= index) {
+  if (resultIndex >= commandIndex) {
     throw new Error(
-      `Invalid index. Result index '${resultIndex}' is greater or equal to the number of commands '${index}' that have been processed.`,
+      `Invalid index. Result index '${resultIndex}' is greater or equal to the number of commands '${commandIndex}' that have been processed.`,
     );
   }
 };
@@ -30,6 +30,7 @@ export const createTarget = (
   }
 
   // If target contains a module name, we assume its one of the allowed std or sui modules
+  // TODO: Add more modules as needed
   if (processTarget.length === 2) {
     switch (processTarget[0]) {
       case "kiosk":

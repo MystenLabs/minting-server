@@ -15,7 +15,7 @@ export type PTBArgument = {
 export type PTBCommand = {
   target: string;
   arguments: PTBArgument[];
-  typeArguments: string[];
+  // typeArguments: string[]; // TODO: Should this be removed? Is the assumption that type arguments will be fixed?
 };
 
 export type PTBQueueObject = {

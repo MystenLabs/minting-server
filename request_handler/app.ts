@@ -29,6 +29,7 @@ app.post(
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       res.status(400).json({ errors: errors.array() });
+      return;
     }
     // Proceed to push the request to the queue.
     try {

@@ -5,6 +5,9 @@ smartContractFunctions:
     argumentTypes: ["object"] # The types of arguments that the function takes
     typeArguments: [] # The type arguments if generic types are used
   # You can specify more functions here e.g.
-  # - name: "burn_nft"
-  #   argumentTypes: ["object", "u64"]
-  #   typeArguments: ["0x2::sui::SUI"]
+  - name: "transfer::public_transfer"
+    argumentTypes: ["object", "address"]
+    typeArguments:
+      [
+        "0x14ab6ea486e2d55710243637b270d707e4878d256c44f835db2112c85385cb22::contract_example::ExampleNFT",
+      ]
