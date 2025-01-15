@@ -19,15 +19,17 @@ app.use("/", serverAdapter.getRouter());
 app.use(express.json());
 app.post(
   "/",
-  check("smartContractFunctionName").trim().notEmpty(),
-  check("smartContractFunctionArguments").isArray(),
-  check("receiverAddress").optional().isString(),
+  check("commands").isArray(),
+  check("commands.*.target").isString().notEmpty(),
+  check("commands.*.arguments").isArray(),
+  check("commands.*.typeArguments").optional().isArray(),
   async (req: Request, res: Response) => {
     // First check if there have been any errors on validation.
     const timestamp = Math.floor(new Date().getTime());
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       res.status(400).json({ errors: errors.array() });
+      return;
     }
     // Proceed to push the request to the queue.
     try {

@@ -1,0 +1,13 @@
+# This is an example of a ptb configuration file
+# defines allowed ptb structure. Ordering of commands is important.
+ptbStructure:
+  - command:
+    target: "kiosk::new" # create a new kiosk
+  - command:
+    target: "package::mint_nft" # mint an nft
+  - command:
+    target: "kiosk::place" # place the nft in the kiosk
+  - command:
+    target: "transfer::public_transfer" # transfer the kiosk owner cap to the user
+  - command:
+    target: "transfer::public_share_object" # share the kiosk
