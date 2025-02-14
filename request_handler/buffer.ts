@@ -28,12 +28,12 @@ export async function enqueueToBatchBuffer(
     console.log(
       `Adding request to buffer... ${batchBuffer.length}/${maxBatchSize}`,
     );
+
     batchBuffer.push({
-      smartContractFunctionName: req.body.smartContractFunctionName,
-      smartContractFunctionArguments: req.body.smartContractFunctionArguments,
-      receiverAddress: req.body.receiverAddress,
       timestamp: timestamp,
-    } as QueueObject);
+      commands: req.body.commands,
+    });
+
     if (!staleBufferIntervalRunning) {
       staleBufferIntervalRunning = true;
       setTimeout(async () => {

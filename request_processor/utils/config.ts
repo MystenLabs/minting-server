@@ -28,10 +28,24 @@ function getEnvVariables() {
 
 export const envVariables = getEnvVariables();
 
+// TODO: Add more argument types as needed. Only pending option and vector
+type ArgumentTypes =
+  | "object"
+  | "u8"
+  | "u16"
+  | "u32"
+  | "u64"
+  | "u128"
+  | "u256"
+  | "address"
+  | "string"
+  | "bool";
+
 export type SmartContractFunctionConfig = {
   smartContractFunctions: {
     name: string;
-    typesOfArguments: [string];
+    argumentTypes: [ArgumentTypes];
+    typeArguments: [string];
   }[];
 };
 

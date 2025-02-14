@@ -7,12 +7,26 @@ const redisConfig = {
   password: process.env.REDIS_PASSWORD,
 };
 
-export type QueueObject = {
-  smartContractFunctionName: string;
-  smartContractFunctionArguments: string[];
-  receiverAddress?: string;
-  timestamp: number;
+export type PTBArgument = {
+  type: "request-input" | "command-result";
+  value: string;
 };
+
+export type PTBCommand = {
+  target: string;
+  arguments: PTBArgument[];
+  // typeArguments: string[]; // TODO: Should this be removed? Is the assumption that type arguments will be fixed?
+};
+
+export type PTBQueueObject = {
+  timestamp: number;
+  commands: PTBCommand[];
+};
+
+export type QueueObject = PTBQueueObject;
+
+export const isPTBQueueObject = (x: any): x is PTBQueueObject =>
+  x.executionContext === "PTB";
 
 export const requestsQueue = new Queue("requests-queue", {
   connection: redisConfig,
